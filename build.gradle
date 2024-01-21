@@ -11,6 +11,9 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs layout.projectDirectory.dir('libs')
+    }
 }
 
 dependencies {

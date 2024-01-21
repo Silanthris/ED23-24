@@ -1,7 +1,17 @@
+package ed;
+
+import ed.API.Edge.Edge;
+import ed.API.Game.EntitiesLocation;
+import ed.API.Game.GameMap;
+import ed.API.Game.Graph;
+
+import java.io.IOException;
 import java.util.Scanner;
 
-public class MapGenerator {
-    public static void main(String[] args) {
+public class Main {
+
+    public static void main(String[] args) throws IOException{
+
         // Example usage
         int numLocations = 10;
         boolean bidirectional = true;
@@ -11,14 +21,14 @@ public class MapGenerator {
         gameMap.generateMap(numLocations);
 
         // Access the graph to retrieve locations, edges, and distances
-        Graph graph = gameMap.graph;
+        Graph graph = gameMap.getGraph();
 
-        for (Location location : graph.locations.values()) {
-            System.out.println("Location " + location.id + ": (" + location.x + ", " + location.y + ")");
+        for (EntitiesLocation location : graph.getLocations().getValues()) {
+            System.out.println("Location " + location.getId() + ": (" + location.getX() + ", " + location.getY() + ")");
         }
 
-        for (Edge edge : graph.edges) {
-            System.out.println("Edge: " + edge.source.id + " -> " + edge.destination.id + " (Distance: " + edge.distance + " km)");
+        for (Edge edge : graph.getEdges()) {
+            System.out.println("Edge: " + edge.getSource().getId() + " -> " + edge.getDestination().getId() + " (Distance: " + edge.getDistance() + " km)");
         }
 
         // Permita que os jogadores selecionem as localizações das bandeiras
@@ -44,6 +54,6 @@ public class MapGenerator {
 
         // Start the game, deciding randomly which player begins and placing bots at flag locations
         gameMap.startGame();
-
     }
+
 }

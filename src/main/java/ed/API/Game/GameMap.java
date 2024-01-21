@@ -1,14 +1,20 @@
+package ed.API.Game;
+
+import ed.API.Bot.Bot;
+import ed.API.Edge.Edge;
+import ed.API.Player.Player;
+
 import java.util.Random;
 
-class GameMap {
+public class GameMap {
 
     private Player player1;
     private Player player2;
     // ... (other code)
 
-    Graph graph;
-    boolean bidirectional;
-    double density;
+    private final Graph graph;
+    private final boolean bidirectional;
+    private final double density;
 
     private int currentRound;
     private Player currentPlayer;
@@ -19,6 +25,10 @@ class GameMap {
         this.density = density;
         this.player1 = new Player();
         this.player2 = new Player();
+    }
+
+    public Graph getGraph() {
+        return graph;
     }
 
     public Player getPlayer1() {
@@ -38,7 +48,7 @@ class GameMap {
     public void playRound() {
         System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
 
-        for (Bot bot : currentPlayer.bots) {
+        for (Bot bot : currentPlayer.getBots()) {
             // Movimenta o bot de acordo com a lógica específica (não fornecida)
             bot.getAlgorithm().move(bot);
         }
@@ -49,16 +59,16 @@ class GameMap {
     }
 
     private void moveBotsToFlag(Player player) {
-        Location flagLocation = findPlayerFlagLocation(player);
+        EntitiesLocation flagLocation = findPlayerFlagLocation(player);
 
-        for (Bot bot : player.bots) {
+        for (Bot bot : player.getBots()) {
             bot.setLocation(flagLocation);
         }
     }
 
-    private Location findPlayerFlagLocation(Player player) {
-        for (Location location : graph.locations.values()) {
-            if ((player == player1 && location.isPlayer1Flag) || (player == player2 && location.isPlayer2Flag)) {
+    private EntitiesLocation findPlayerFlagLocation(Player player) {
+        for (EntitiesLocation location : graph.getLocations().getValues()) {
+            if ((player == player1 && location.isPlayer1Flag()) || (player == player2 && location.isPlayer2Flag())) {
                 return location;
             }
         }
@@ -66,13 +76,13 @@ class GameMap {
     }
 
     public void selectFlagLocations(int player1Flag, int player2Flag) {
-        Location player1FlagLocation = graph.locations.get(player1Flag);
-        Location player2FlagLocation = graph.locations.get(player2Flag);
+        EntitiesLocation player1FlagLocation = graph.getLocations().get(player1Flag);
+        EntitiesLocation player2FlagLocation = graph.getLocations().get(player2Flag);
 
         if (player1FlagLocation != null && player2FlagLocation != null) {
             // Define as localizações das bandeiras para os jogadores
-            player1FlagLocation.isPlayer1Flag = true;
-            player2FlagLocation.isPlayer2Flag = true;
+            player1FlagLocation.setPlayer1Flag(true);
+            player2FlagLocation.setPlayer2Flag(true);
         } else {
             System.out.println("Erro: As localizações das bandeiras não são válidas.");
         }
@@ -85,7 +95,7 @@ class GameMap {
         for (int i = 1; i <= numLocations; i++) {
             double x = random.nextDouble() * 100; // Adjust as needed
             double y = random.nextDouble() * 100; // Adjust as needed
-            Location location = new Location(i, x, y);
+            EntitiesLocation location = new EntitiesLocation(i, x, y);
             graph.addLocation(location);
         }
 
@@ -93,8 +103,8 @@ class GameMap {
         for (int i = 1; i <= numLocations; i++) {
             for (int j = i + 1; j <= numLocations; j++) {
                 if (random.nextDouble() < density) {
-                    Location source = graph.locations.get(i);
-                    Location destination = graph.locations.get(j);
+                    EntitiesLocation source = graph.getLocations().get(i);
+                    EntitiesLocation destination = graph.getLocations().get(j);
                     double distance = random.nextDouble() * 15 + 1; // Distance between 1 and 15 km
 
                     Edge edge = new Edge(source, destination, distance);
@@ -108,6 +118,7 @@ class GameMap {
                 }
             }
         }
+
     }
 
     // Add export functionality if needed
