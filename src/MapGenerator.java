@@ -21,7 +21,6 @@ public class MapGenerator {
             System.out.println("Edge: " + edge.source.id + " -> " + edge.destination.id + " (Distance: " + edge.distance + " km)");
         }
 
-
         // Permita que os jogadores selecionem as localizações das bandeiras
         Scanner scanner = new Scanner(System.in);
         System.out.print("Jogador 1 - Selecione a localização da bandeira (1-" + numLocations + "): ");
