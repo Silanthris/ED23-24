@@ -3,6 +3,8 @@ package ed.API.Game;
 import ed.API.Bot.Bot;
 import ed.API.Edge.Edge;
 import ed.API.Player.Player;
+import pt.ipp.estg.data.structures.List.ArrayList;
+import pt.ipp.estg.data.structures.List.LinkedList;
 
 import java.util.Random;
 
@@ -39,19 +41,57 @@ public class GameMap {
         return player2;
     }
 
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+
     public void startGame() {
         Random random = new Random();
         currentRound = 1;
         currentPlayer = random.nextBoolean() ? player1 : player2; // Randomly decide the starting player
+        moveBotsToFlag(player1);
+        moveBotsToFlag(player2);
+    }
+
+    public void printCurrentPlayerTurn() {
+        System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
     }
 
     public void playRound() {
         System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
+        int currentPlayerInt = (currentPlayer == player1 ? 1 : 2);
 
+        int botIndex = 0;
         for (Bot bot : currentPlayer.getBots()) {
-            // Movimenta o bot de acordo com a lógica específica (não fornecida)
-            bot.getAlgorithm().move(bot);
+
+
+            EntitiesLocation initialPosition = bot.getLocation();
+            System.out.println("Bot " + botIndex + " (Player " + ": Player " + currentPlayerInt + "'s turn" + ") is at: " +
+                    "(" + initialPosition.getX() + ", " + initialPosition.getY() + "  " + initialPosition.getId() + ")");
+
+
+            bot.getAlgorithm().move(bot, graph);
+
+            EntitiesLocation newPosition = bot.getLocation();
+            System.out.println("Bot " + botIndex + " (Player " + ": Player " + currentPlayerInt + "'s turn" + ") moved to: " +
+                    "(" + newPosition.getX() + ", " + newPosition.getY()  + "  " + newPosition.getId() + ")");
+
+
         }
+
 
         // Alternar para o próximo jogador na próxima ronda
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
@@ -63,6 +103,22 @@ public class GameMap {
 
         for (Bot bot : player.getBots()) {
             bot.setLocation(flagLocation);
+        }
+    }
+
+    public void printBotLocations() {
+        System.out.println("Bot Locations:");
+
+        for (int playerNum = 1; playerNum <= 2; playerNum++) {
+            Player currentPlayer = (playerNum == 1) ? player1 : player2;
+
+            int botIndex = 0;
+            for (Bot bot : currentPlayer.getBots()) {
+                EntitiesLocation location = bot.getLocation();
+                System.out.println("Bot " + (botIndex + 1) + " (Player " + playerNum + "): " +
+                        "(" + location.getX() + ", " + location.getY() + ")" + "  " + "Location" + location.getId());
+                botIndex++;
+            }
         }
     }
 

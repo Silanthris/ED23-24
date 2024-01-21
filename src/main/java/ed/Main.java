@@ -17,6 +17,8 @@ public class Main {
         boolean bidirectional = true;
         double density = 0.5;
 
+
+
         GameMap gameMap = new GameMap(bidirectional, density);
         gameMap.generateMap(numLocations);
 
@@ -54,6 +56,20 @@ public class Main {
 
         // Start the game, deciding randomly which player begins and placing bots at flag locations
         gameMap.startGame();
+
+        while(gameMap.getCurrentRound() != 0){
+
+            //gameMap.printCurrentPlayerTurn();
+            //gameMap.printBotLocations();
+
+            gameMap.playRound();
+
+            gameMap.setCurrentRound(0);
+
+
+
+        }
+
     }
 
 }
