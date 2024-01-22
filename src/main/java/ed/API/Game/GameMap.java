@@ -1,11 +1,11 @@
 package ed.API.Game;
 
-import ed.API.Bot.Bot;
-import ed.API.Edge.Edge;
 import ed.API.Player.Player;
-import ed.Utils.List.UnorderedArrayList;
 
+import java.util.Iterator;
 import java.util.Random;
+
+import ed.Utils.Graph.Graph;
 
 public class GameMap {
 
@@ -13,7 +13,7 @@ public class GameMap {
     private Player player2;
     // ... (other code)
 
-    private final Graph graph;
+    private final Graph<EntitiesLocation> graph;
     private final boolean bidirectional;
     private final double density;
 
@@ -21,14 +21,14 @@ public class GameMap {
     private Player currentPlayer;
 
     public GameMap(boolean bidirectional, double density) {
-        this.graph = new Graph();
+        this.graph = new Graph<>();
         this.bidirectional = bidirectional;
         this.density = density;
         this.player1 = new Player();
         this.player2 = new Player();
     }
 
-    public Graph getGraph() {
+    public Graph<EntitiesLocation> getGraph() {
         return graph;
     }
 
@@ -57,6 +57,94 @@ public class GameMap {
     }
 
 
+    public void generateRandomGraph(int numLocations, boolean bidirectional, double edgeDensity) {
+        // Validate input parameters
+        if (numLocations <= 0 || edgeDensity < 0 || edgeDensity > 1) {
+            throw new IllegalArgumentException("Invalid input parameters");
+        }
+
+        // Clear existing graph data
+        /*
+        this.numVertices = 0;
+        this.adjMatrix = new boolean[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
+        this.vertices = (T[]) (new EntitiesLocation[DEFAULT_CAPACITY]);
+        */
+
+
+        // Generate random locations
+        Random random = new Random();
+        for (int i = 0; i < numLocations; i++) {
+            graph.addVertex(new EntitiesLocation(i, random.nextDouble(), random.nextDouble()));
+        }
+
+        Iterator<EntitiesLocation> resultList = graph.getVertices();
+        // Generate random edges based on edge density
+        while (resultList.hasNext()) {
+
+            EntitiesLocation current = resultList.next();
+
+            Iterator<EntitiesLocation> resultListTemporary = graph.getVertices();
+
+            while (resultListTemporary.hasNext()) {
+
+                EntitiesLocation currentTemporary = resultListTemporary.next();
+
+                if (random.nextDouble() <= edgeDensity && current.getId() != currentTemporary.getId() ) {
+
+                    graph.addEdge(current, currentTemporary);
+
+                }
+
+            }
+
+        }
+
+        /*
+        // Assign random distances to edges (1 to 15 kilometers)
+        for (int i = 0; i <  graph.size(); i++) {
+            for (int j = 0; j <  graph.size(); j++) {
+                if ( graph.adjMatrix[i][j]) {
+                    // Assign a random distance between 1 and 15 kilometers
+                    int distance = random.nextInt(15) + 1;
+                    // You might want to store or display these distances as needed
+                }
+            }
+        }
+        */
+
+
+
+    }
+
+    public void printGraph() {
+        System.out.println("Vertices:");
+        Iterator<EntitiesLocation> verticesIterator = graph.getVertices();
+        while (verticesIterator.hasNext()) {
+            EntitiesLocation vertex = verticesIterator.next();
+            System.out.println("Vertex " + vertex.getId() + ": (" + vertex.getX() + ", " + vertex.getY() + ")");
+        }
+
+        System.out.println("\nEdges (Adjacency Matrix):");
+
+        Iterator<EntitiesLocation> verticesIterator2 = graph.getVertices();
+
+        while (verticesIterator2.hasNext()) {
+
+            EntitiesLocation current = verticesIterator2.next();
+
+            Iterator<EntitiesLocation> adjMatrix = graph.getAdjacentVertices(current);
+
+            while (adjMatrix.hasNext()) {
+
+                System.out.println("Edge: (" + current.getId() + ") -> (" + adjMatrix.next().getId() + ")");
+
+            }
+
+        }
+
+    }
+
+/*
     public void startGame() {
         Random random = new Random();
         currentRound = 1;
@@ -69,6 +157,9 @@ public class GameMap {
         System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
     }
 
+ */
+
+    /*
     public void playRound() {
         System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
         int currentPlayerInt = (currentPlayer == player1 ? 1 : 2);
@@ -97,6 +188,8 @@ public class GameMap {
         currentRound++;
     }
 
+     */
+/*
     private void moveBotsToFlag(Player player) {
         EntitiesLocation flagLocation = findPlayerFlagLocation(player);
 
@@ -105,6 +198,10 @@ public class GameMap {
         }
     }
 
+
+ */
+
+    /*
     public void printBotLocations() {
         System.out.println("Bot Locations:");
 
@@ -121,6 +218,8 @@ public class GameMap {
         }
     }
 
+     */
+/*
     private EntitiesLocation findPlayerFlagLocation(Player player) {
         for (EntitiesLocation location : graph.getLocations().getValues()) {
             if ((player == player1 && location.isPlayer1Flag()) || (player == player2 && location.isPlayer2Flag())) {
@@ -130,6 +229,8 @@ public class GameMap {
         return null; // Handle the case where the flag location is not found
     }
 
+ */
+/*
     public void selectFlagLocations(int player1Flag, int player2Flag) {
         EntitiesLocation player1FlagLocation = graph.getLocations().get(player1Flag);
         EntitiesLocation player2FlagLocation = graph.getLocations().get(player2Flag);
@@ -142,40 +243,33 @@ public class GameMap {
             System.out.println("Erro: As localizações das bandeiras não são válidas.");
         }
     }
+    */
 
-    public void generateMap(int numLocations) {
-        Random random = new Random();
+/*
+    public void generateMap(int numLocations, boolean bidirectional, double edgeDensity) {
+        // Clear existing graph
+        graph.numVertices = 0;
+        graph.adjMatrix = new boolean[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
+        graph.vertices = (T[]) (new Object[DEFAULT_CAPACITY]);
 
-        // Generate locations with random coordinates
-        for (int i = 1; i <= numLocations; i++) {
-            double x = random.nextDouble() * 100; // Adjust as needed
-            double y = random.nextDouble() * 100; // Adjust as needed
-            EntitiesLocation location = new EntitiesLocation(i, x, y);
-            graph.addLocation(location);
+        // Generate vertices
+        for (int i = 0; i < numLocations; i++) {
+            graph.addVertex((T) ("Location " + (i + 1)));
         }
 
-        // Generate edges with distances based on density
-        for (int i = 1; i <= numLocations; i++) {
-            for (int j = i + 1; j <= numLocations; j++) {
-                if (random.nextDouble() < density) {
-                    EntitiesLocation source = graph.getLocations().get(i);
-                    EntitiesLocation destination = graph.getLocations().get(j);
-                    double distance = random.nextDouble() * 15 + 1; // Distance between 1 and 15 km
-
-                    Edge edge = new Edge(source, destination, distance);
-                    graph.addEdge(edge);
-
+        // Generate edges based on edgeDensity
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = i + 1; j < numVertices; j++) {
+                if (Math.random() < edgeDensity) {
+                    addEdge(vertices[i], vertices[j]);
                     if (bidirectional) {
-                        // Add bidirectional edge
-                        Edge reverseEdge = new Edge(destination, source, distance);
-                        graph.addEdge(reverseEdge);
+                        addEdge(vertices[j], vertices[i]);
                     }
                 }
             }
         }
-
     }
-
+*/
     // Add export functionality if needed
     // You can export the map in a format suitable for your game
 }

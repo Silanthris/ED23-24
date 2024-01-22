@@ -3,7 +3,7 @@ package ed;
 import ed.API.Edge.Edge;
 import ed.API.Game.EntitiesLocation;
 import ed.API.Game.GameMap;
-import ed.API.Game.Graph;
+import ed.Utils.Graph.Graph;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,12 +15,20 @@ public class Main {
         // Example usage
         int numLocations = 10;
         boolean bidirectional = true;
-        double density = 0.5;
-
+        double density = 0.2;
 
 
         GameMap gameMap = new GameMap(bidirectional, density);
-        gameMap.generateMap(numLocations);
+        gameMap.generateRandomGraph(numLocations,bidirectional,density);
+
+        gameMap.printGraph();
+
+
+
+
+      /*
+        GameMap gameMap = new GameMap(bidirectional, density);
+        gameMap.generateMap(numLocations,bidirectional,density);
 
         // Access the graph to retrieve locations, edges, and distances
         Graph graph = gameMap.getGraph();
@@ -69,7 +77,7 @@ public class Main {
 
 
         }
-
+*/
     }
 
 }
