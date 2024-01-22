@@ -31,6 +31,11 @@ public class RandomMovementAlgorithm implements Algorithm {
 
         if(!shortPath.hasNext()) return null;
 
+        //skip current position
+        shortPath.next();
+
+        if(!shortPath.hasNext()) return null;
+
         return shortPath.next();
 
     }

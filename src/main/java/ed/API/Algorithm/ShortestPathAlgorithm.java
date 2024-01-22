@@ -16,6 +16,8 @@ public class ShortestPathAlgorithm implements Algorithm {
 
         iterator.next(); //skip his location
 
+        if(!iterator.hasNext()) return null;
+
         return iterator.next();
     }
 

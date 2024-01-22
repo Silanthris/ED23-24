@@ -5,7 +5,6 @@ import ed.API.Algorithm.RandomMovementAlgorithm;
 import ed.API.Algorithm.ShortestPathAlgorithm;
 import ed.API.Bot.Bot;
 
-import ed.API.Edge.Edge;
 import ed.Utils.List.UnorderedArrayList;
 import ed.Utils.List.ArrayList;
 

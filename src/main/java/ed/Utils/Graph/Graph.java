@@ -27,18 +27,14 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     private void expandCapacity() {
-        T[] largerVertices = (T[]) (new Object[this.vertices.length * 2]);
+        T[] largerVertices = (T[]) new Object[this.vertices.length * 2];
         boolean[][] largerAdjMatrix = new boolean[this.vertices.length * 2][this.vertices.length * 2];
         double[][] largerAdjWeightMatrix = new double[this.vertices.length * 2][this.vertices.length * 2];
 
         for (int i = 0; i < this.numVertices; i++) {
             System.arraycopy(this.adjMatrix[i], 0, largerAdjMatrix[i], 0, this.numVertices);
             largerVertices[i] = this.vertices[i];
-        }
-
-        for (int i = 0; i < this.numVertices; i++) {
             System.arraycopy(this.adjWeightMatrix[i], 0, largerAdjWeightMatrix[i], 0, this.numVertices);
-            largerAdjWeightMatrix[i] = (double[]) this.vertices[i];
         }
 
         this.vertices = largerVertices;
@@ -209,6 +205,13 @@ public class Graph<T> implements GraphADT<T> {
 
         for (int i = 0; i < numVertices - 1; i++) {
             int currentVertex = getMinDistanceVertex(distances, visited);
+
+            if (currentVertex == -1) {
+               currentVertex = 0;
+            }
+
+           // System.out.println(currentVertex);
+            //System.out.println(numVertices);
             visited[currentVertex] = true;
 
             for (int j = 0; j < numVertices; j++) {
