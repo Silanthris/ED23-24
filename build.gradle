@@ -6,20 +6,16 @@ plugins {
 jacoco {
     toolVersion = "0.8.7"
 }
-group = "esii_group12"
-version = "1.0-SNAPSHOT"
+group = "ed_group_8200113_8200107"
+version = "1.0"
 
 repositories {
     mavenCentral()
-    flatDir {
-        dirs layout.projectDirectory.dir('libs')
-    }
 }
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation 'pt.ipp.estg:DataStructures:1.0.0'
 }
 
 tasks.test {
