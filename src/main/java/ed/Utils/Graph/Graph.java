@@ -16,25 +16,34 @@ public class Graph<T> implements GraphADT<T> {
     protected final int DEFAULT_CAPACITY = 16;
     protected int numVertices;
     protected boolean[][] adjMatrix;
+    protected double[][] adjWeightMatrix;
     protected T[] vertices;
 
     public Graph() {
         this.numVertices = 0;
         this.adjMatrix = new boolean[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
+        this.adjWeightMatrix = new double[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
         this.vertices = (T[]) (new Object[DEFAULT_CAPACITY]);
     }
 
     private void expandCapacity() {
         T[] largerVertices = (T[]) (new Object[this.vertices.length * 2]);
         boolean[][] largerAdjMatrix = new boolean[this.vertices.length * 2][this.vertices.length * 2];
+        double[][] largerAdjWeightMatrix = new double[this.vertices.length * 2][this.vertices.length * 2];
 
         for (int i = 0; i < this.numVertices; i++) {
             System.arraycopy(this.adjMatrix[i], 0, largerAdjMatrix[i], 0, this.numVertices);
             largerVertices[i] = this.vertices[i];
         }
 
+        for (int i = 0; i < this.numVertices; i++) {
+            System.arraycopy(this.adjWeightMatrix[i], 0, largerAdjWeightMatrix[i], 0, this.numVertices);
+            largerAdjWeightMatrix[i] = (double[]) this.vertices[i];
+        }
+
         this.vertices = largerVertices;
         this.adjMatrix = largerAdjMatrix;
+        this.adjWeightMatrix = largerAdjWeightMatrix;
     }
 
     protected int getIndex(T vertex) {
@@ -73,6 +82,8 @@ public class Graph<T> implements GraphADT<T> {
         for (int i = 0; i < this.numVertices; i++) {
             if (this.adjMatrix[pos][i]) this.adjMatrix[pos][i] = false;
             if (this.adjMatrix[i][pos]) this.adjMatrix[i][pos] = false;
+            if (this.adjWeightMatrix[pos][i]!=0) this.adjWeightMatrix[pos][i] = 0;
+            if (this.adjWeightMatrix[i][pos]!=0) this.adjWeightMatrix[i][pos] = 0;
         }
 
         for (int i = pos; i < this.numVertices - 1; i++) {
@@ -80,26 +91,35 @@ public class Graph<T> implements GraphADT<T> {
             for (int j = 0; j < this.numVertices; j++) {
                 this.adjMatrix[i][j] = this.adjMatrix[i + 1][j];
                 this.adjMatrix[j][i] = this.adjMatrix[j][i + 1];
+                this.adjWeightMatrix[i][j] = this.adjWeightMatrix[i + 1][j];
+                this.adjWeightMatrix[i][j] = this.adjWeightMatrix[i + 1][j];
             }
         }
 
         this.numVertices--;
     }
 
-    public void addEdge(T vertex1, T vertex2, boolean bidirectional, double density) {
+    public void addEdge(T vertex1, T vertex2, boolean bidirectional, double density, double weight) {
         int index1 = this.getIndex(vertex1);
         int index2 = this.getIndex(vertex2);
         if (this.indexInvalid(index1) || this.indexInvalid(index2)) throw new IllegalArgumentException();
 
         if (!this.adjMatrix[index1][index2] || !this.adjMatrix[index2][index1]) {
             this.adjMatrix[index1][index2] = true;
+            this.adjWeightMatrix[index1][index2] = weight;
         }
 
         if(bidirectional){
-            Double random = Math.random();
-            if(random>density) this.adjMatrix[index2][index1] = true;
+            double random = Math.random();
+            if(random>density) {
+                this.adjMatrix[index2][index1] = true;
+                this.adjWeightMatrix[index1][index2] = weight;
+            }
         }
-        else this.adjMatrix[index2][index1] = true;
+        else {
+            this.adjMatrix[index2][index1] = true;
+            this.adjWeightMatrix[index1][index2] = weight;
+        }
     }
 
     public void removeEdge(T vertex1, T vertex2) {
@@ -112,6 +132,8 @@ public class Graph<T> implements GraphADT<T> {
 
         this.adjMatrix[pos1][pos2] = false;
         this.adjMatrix[pos2][pos1] = false;
+        this.adjWeightMatrix[pos1][pos2] = 0;
+        this.adjWeightMatrix[pos2][pos1] = 0;
     }
 
     public Iterator<T> iteratorBFS(T startVertex) {

@@ -88,7 +88,10 @@ public class GameMap {
 
                 if (random.nextDouble() <= density && current.getId() != currentTemporary.getId()) {
 
-                    graph.addEdge(current, currentTemporary, bidirectional, density);
+                    Random randomWeight = new Random();
+                    randomWeight.nextDouble(15);
+
+                    graph.addEdge(current, currentTemporary, bidirectional, density, randomWeight.nextDouble());
 
                 }
 

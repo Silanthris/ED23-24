@@ -7,7 +7,7 @@ public interface GraphADT<T> {
 
     void removeVertex(T vertex);
 
-    void addEdge(T vertex1, T vertex2, boolean bidirectional, double density);
+    void addEdge(T vertex1, T vertex2, boolean bidirectional, double density, double weight);
 
     void removeEdge(T vertex1, T vertex2);
 
