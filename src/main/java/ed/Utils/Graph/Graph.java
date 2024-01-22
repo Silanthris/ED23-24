@@ -193,27 +193,28 @@ public class Graph<T> implements GraphADT<T> {
     public Iterator<T> iteratorShortestPath(T startVertex, T targetVertex) {
         UnorderedListADT<T> resultList = new UnorderedArrayList<>();
 
-        int startIndex = startVertex == null ? 0 : this.getIndex(startVertex);
-        int targetIndex = this.getIndex(targetVertex);
-        if (this.indexInvalid(startIndex) || this.indexInvalid(targetIndex) || (startIndex == targetIndex))
+        int startIndex = startVertex == null ? 0 : getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+        if (indexInvalid(startIndex) || indexInvalid(targetIndex) || (startIndex == targetIndex))
             return resultList.iterator();
 
-        int[] distances = new int[this.numVertices];
-        int[] predecessors = new int[this.numVertices];
-        boolean[] visited = new boolean[this.numVertices];
+        double[] distances = new double[numVertices];
+        int[] predecessors = new int[numVertices];
+        boolean[] visited = new boolean[numVertices];
 
-        for (int i = 0; i < this.numVertices; i++) {
-            distances[i] = Integer.MAX_VALUE;
+        for (int i = 0; i < numVertices; i++) {
+            distances[i] = Double.POSITIVE_INFINITY;
         }
         distances[startIndex] = 0;
 
-        for (int i = 0; i < this.numVertices - 1; i++) {
+        for (int i = 0; i < numVertices - 1; i++) {
             int currentVertex = getMinDistanceVertex(distances, visited);
             visited[currentVertex] = true;
 
-            for (int j = 0; j < this.numVertices; j++) {
-                if (!visited[j] && this.adjMatrix[currentVertex][j] && distances[currentVertex] != Integer.MAX_VALUE && distances[currentVertex] + 1 < distances[j]) {
-                    distances[j] = distances[currentVertex] + 1;
+            for (int j = 0; j < numVertices; j++) {
+                if (!visited[j] && adjMatrix[currentVertex][j] && distances[currentVertex] != Double.POSITIVE_INFINITY
+                        && distances[currentVertex] + adjWeightMatrix[currentVertex][j] < distances[j]) {
+                    distances[j] = distances[currentVertex] + adjWeightMatrix[currentVertex][j];
                     predecessors[j] = currentVertex;
                 }
             }
@@ -221,47 +222,50 @@ public class Graph<T> implements GraphADT<T> {
 
         int currentVertex = targetIndex;
         while (currentVertex != startIndex) {
-            resultList.addToFront(this.vertices[currentVertex]);
+            resultList.addToFront(vertices[currentVertex]);
             currentVertex = predecessors[currentVertex];
         }
-        resultList.addToFront(this.vertices[startIndex]);
+        resultList.addToFront(vertices[startIndex]);
 
         return resultList.iterator();
     }
 
-    public int shortestPathLength(T startVertex, T targetVertex) {
-        int startIndex = startVertex == null ? 0 : this.getIndex(startVertex);
-        int targetIndex = this.getIndex(targetVertex);
-        if (this.indexInvalid(startIndex) || this.indexInvalid(targetIndex) || (startIndex == targetIndex))
+    // Calculates the length of the shortest path from startVertex to targetVertex based on edge weights
+    public double shortestPathLength(T startVertex, T targetVertex) {
+        int startIndex = startVertex == null ? 0 : getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+        if (indexInvalid(startIndex) || indexInvalid(targetIndex) || (startIndex == targetIndex))
             return -1;
 
-        int[] distances = new int[this.numVertices];
-        boolean[] visited = new boolean[this.numVertices];
+        double[] distances = new double[numVertices];
+        boolean[] visited = new boolean[numVertices];
 
-        for (int i = 0; i < this.numVertices; i++) {
-            distances[i] = Integer.MAX_VALUE;
+        for (int i = 0; i < numVertices; i++) {
+            distances[i] = Double.POSITIVE_INFINITY;
         }
         distances[startIndex] = 0;
 
-        for (int i = 0; i < this.numVertices - 1; i++) {
+        for (int i = 0; i < numVertices - 1; i++) {
             int currentVertex = getMinDistanceVertex(distances, visited);
             visited[currentVertex] = true;
 
-            for (int j = 0; j < this.numVertices; j++) {
-                if (!visited[j] && this.adjMatrix[currentVertex][j] && distances[currentVertex] != Integer.MAX_VALUE && distances[currentVertex] + 1 < distances[j]) {
-                    distances[j] = distances[currentVertex] + 1;
+            for (int j = 0; j < numVertices; j++) {
+                if (!visited[j] && adjMatrix[currentVertex][j] && distances[currentVertex] != Double.POSITIVE_INFINITY
+                        && distances[currentVertex] + adjWeightMatrix[currentVertex][j] < distances[j]) {
+                    distances[j] = distances[currentVertex] + adjWeightMatrix[currentVertex][j];
                 }
             }
         }
 
-        return distances[targetIndex] == Integer.MAX_VALUE ? -1 : distances[targetIndex];
+        return distances[targetIndex] == Double.POSITIVE_INFINITY ? -1 : distances[targetIndex];
     }
 
-    private int getMinDistanceVertex(int[] distances, boolean[] visited) {
-        int minDistance = Integer.MAX_VALUE;
+
+    private int getMinDistanceVertex(double[] distances, boolean[] visited) {
+        double minDistance = Double.POSITIVE_INFINITY;
         int minDistanceVertex = -1;
 
-        for (int i = 0; i < this.numVertices; i++) {
+        for (int i = 0; i < numVertices; i++) {
             if (!visited[i] && distances[i] < minDistance) {
                 minDistance = distances[i];
                 minDistanceVertex = i;

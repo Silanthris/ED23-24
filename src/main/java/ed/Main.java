@@ -6,11 +6,55 @@ import ed.API.Game.GameMap;
 import ed.Utils.Graph.Graph;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws IOException{
+
+//        Graph<EntitiesLocation> test = new Graph<>();
+//
+//        EntitiesLocation ver1 = new EntitiesLocation(1, 2, 3);
+//        EntitiesLocation ver2 = new EntitiesLocation(2, 2, 3);
+//        EntitiesLocation ver3 = new EntitiesLocation(3, 2, 3);
+//        EntitiesLocation ver4 = new EntitiesLocation(4, 2, 3);
+//
+//        test.addVertex(ver1);
+//        test.addVertex(ver2);
+//        test.addVertex(ver3);
+//        test.addVertex(ver4);
+//
+//        test.addEdge(ver1, ver2, true, 0.5, 12.0);
+//        test.addEdge(ver1, ver3, true, 0.5, 12.0);
+//        test.addEdge(ver2, ver4, true, 0.5, 10.0);
+//        test.addEdge(ver3, ver2, true, 0.5, 2.0);
+//        test.addEdge(ver3, ver4, true, 0.5, 15.0);
+//
+//        Iterator<EntitiesLocation> verticesIterator2 = test.getVertices();
+//
+//        while (verticesIterator2.hasNext()) {
+//
+//            EntitiesLocation current = verticesIterator2.next();
+//
+//            Iterator<EntitiesLocation> adjMatrix = test.getAdjacentVertices(current);
+//
+//            while (adjMatrix.hasNext()) {
+//
+//                System.out.println("Edge: (" + current.getId() + ") -> (" + adjMatrix.next().getId() + ")");
+//
+//            }
+//
+//        }
+//
+//        Iterator<EntitiesLocation> itr = test.iteratorShortestPath(ver1, ver4);
+//        double distance = test.shortestPathLength(ver1, ver4);
+//
+//        while (itr.hasNext()){
+//            System.out.println(itr.next().getId());
+//        }
+//
+//        System.out.println("Distance:" + distance + "km");
 
         // Example usage
         int numLocations = 10;

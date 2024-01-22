@@ -17,7 +17,7 @@ public interface GraphADT<T> {
 
     Iterator<T> iteratorShortestPath(T startVertex, T targetVertex);
 
-    int shortestPathLength(T startVertex, T targetVertex);
+    double shortestPathLength(T startVertex, T targetVertex);
 
     Iterator<T> getAdjacentVertices(T vertex);
 
