@@ -1,7 +1,6 @@
 package ed.Utils.List;
 
-import pt.ipp.estg.data.structures.List.ArrayList;
-import pt.ipp.estg.data.structures.List.OrderedListADT;
+
 
 public class OrderedArrayList<T> extends ArrayList<T> implements OrderedListADT<T> {
     public OrderedArrayList() {

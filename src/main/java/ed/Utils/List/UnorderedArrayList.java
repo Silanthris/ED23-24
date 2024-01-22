@@ -1,8 +1,7 @@
 package ed.Utils.List;
 
-import pt.ipp.estg.data.structures.Exceptions.ElementNotFoundException;
-import pt.ipp.estg.data.structures.List.ArrayList;
-import pt.ipp.estg.data.structures.List.UnorderedListADT;
+import ed.Utils.Exceptions.ElementNotFoundException;
+
 
 public class UnorderedArrayList<T> extends ArrayList<T> implements UnorderedListADT<T> {
     public UnorderedArrayList() {

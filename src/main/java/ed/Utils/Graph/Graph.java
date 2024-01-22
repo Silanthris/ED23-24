@@ -1,13 +1,14 @@
 package ed.Utils.Graph;
 
-import pt.ipp.estg.data.structures.Exceptions.EmptyCollectionException;
-import pt.ipp.estg.data.structures.Graph.GraphADT;
-import pt.ipp.estg.data.structures.List.UnorderedArrayList;
-import pt.ipp.estg.data.structures.List.UnorderedListADT;
-import pt.ipp.estg.data.structures.Queue.LinkedQueue;
-import pt.ipp.estg.data.structures.Queue.QueueADT;
-import pt.ipp.estg.data.structures.Stack.LinkedStack;
-import pt.ipp.estg.data.structures.Stack.StackADT;
+
+import ed.Utils.Graph.GraphADT;
+import ed.Utils.List.UnorderedArrayList;
+import ed.Utils.List.UnorderedListADT;
+import ed.Utils.Queue.QueueADT;
+import ed.Utils.Queue.LinkedQueue;
+import ed.Utils.Stack.LinkedStack;
+import ed.Utils.Stack.StackADT;
+import ed.Utils.Exceptions.EmptyCollectionException;
 
 import java.util.Iterator;
 

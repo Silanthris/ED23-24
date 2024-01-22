@@ -1,6 +1,7 @@
 package ed.Utils.Map;
 
-import pt.ipp.estg.data.structures.List.UnorderedListADT;
+
+import ed.Utils.List.UnorderedListADT;
 
 public interface MapADT<K, V> {
     V get(K key);
@@ -28,6 +29,9 @@ public interface MapADT<K, V> {
     int size();
 
     String toString();
+
+    MapADT<K,V> getNext();
+
 
     interface Entry<K, V> {
         K getKey();

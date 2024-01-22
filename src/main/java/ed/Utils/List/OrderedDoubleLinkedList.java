@@ -1,8 +1,7 @@
 package ed.Utils.List;
 
-import pt.ipp.estg.data.structures.Exceptions.NonComparableElementException;
-import pt.ipp.estg.data.structures.List.DoubleLinkedList;
-import pt.ipp.estg.data.structures.List.OrderedListADT;
+
+import ed.Utils.Exceptions.NonComparableElementException;
 
 public class OrderedDoubleLinkedList<T> extends DoubleLinkedList<T> implements OrderedListADT<T> {
     public OrderedDoubleLinkedList() {

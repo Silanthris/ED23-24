@@ -1,7 +1,7 @@
 package ed.Utils.Stack;
 
-import pt.ipp.estg.data.structures.Exceptions.EmptyCollectionException;
-import pt.ipp.estg.data.structures.Stack.StackADT;
+
+import ed.Utils.Exceptions.EmptyCollectionException;
 
 public class ArrayStack<T> implements StackADT<T> {
     private final int DEFAULT_CAPACITY = 100;

@@ -1,7 +1,7 @@
 package ed.Utils.Queue;
 
-import pt.ipp.estg.data.structures.Exceptions.EmptyCollectionException;
-import pt.ipp.estg.data.structures.Queue.QueueADT;
+
+import ed.Utils.Exceptions.EmptyCollectionException;
 
 public class LinkedQueue<T> implements QueueADT<T> {
     private int count;

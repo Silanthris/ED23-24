@@ -6,8 +6,8 @@ import ed.API.Algorithm.ShortestPathAlgorithm;
 import ed.API.Bot.Bot;
 
 import ed.API.Edge.Edge;
-import pt.ipp.estg.data.structures.List.ArrayList;
-import pt.ipp.estg.data.structures.List.UnorderedArrayList;
+import ed.Utils.List.UnorderedArrayList;
+import ed.Utils.List.ArrayList;
 
 import java.util.Scanner;
 

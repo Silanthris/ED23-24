@@ -3,8 +3,7 @@ package ed.API.Game;
 import ed.API.Bot.Bot;
 import ed.API.Edge.Edge;
 import ed.API.Player.Player;
-import pt.ipp.estg.data.structures.List.ArrayList;
-import pt.ipp.estg.data.structures.List.LinkedList;
+import ed.Utils.List.UnorderedArrayList;
 
 import java.util.Random;
 

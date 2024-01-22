@@ -1,6 +1,6 @@
 package ed.Utils.Queue;
 
-import pt.ipp.estg.data.structures.Tree.Heap;
+import ed.Utils.Tree.Heap;
 
 public class PriorityQueue<T> extends Heap<PriorityQueue.PriorityQueueNode<T>> {
     public PriorityQueue() {

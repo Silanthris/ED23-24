@@ -1,8 +1,9 @@
 package ed.Utils.Set;
 
-import pt.ipp.estg.data.structures.Exceptions.ElementNotFoundException;
-import pt.ipp.estg.data.structures.Exceptions.EmptyCollectionException;
-import pt.ipp.estg.data.structures.Set.SetADT;
+
+
+import ed.Utils.Exceptions.ElementNotFoundException;
+import ed.Utils.Exceptions.EmptyCollectionException;
 
 import java.util.Iterator;
 import java.util.Random;

@@ -1,8 +1,7 @@
 package ed.Utils.List;
 
-import pt.ipp.estg.data.structures.Exceptions.NonComparableElementException;
-import pt.ipp.estg.data.structures.List.LinkedList;
-import pt.ipp.estg.data.structures.List.OrderedListADT;
+
+import ed.Utils.Exceptions.NonComparableElementException;
 
 public class OrderedLinkedList<T> extends LinkedList<T> implements OrderedListADT<T> {
     public OrderedLinkedList() {

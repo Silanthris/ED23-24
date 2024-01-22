@@ -1,8 +1,8 @@
 package ed.Utils.List;
 
-import pt.ipp.estg.data.structures.Exceptions.ElementNotFoundException;
-import pt.ipp.estg.data.structures.Exceptions.EmptyCollectionException;
-import pt.ipp.estg.data.structures.List.ListADT;
+
+import ed.Utils.Exceptions.ElementNotFoundException;
+import ed.Utils.Exceptions.EmptyCollectionException;
 
 import java.util.Iterator;
 

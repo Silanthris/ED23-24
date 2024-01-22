@@ -5,8 +5,8 @@ import ed.API.Game.EntitiesLocation;
 import ed.API.Game.GameMap;
 
 import ed.API.Game.Graph;
-import pt.ipp.estg.data.structures.List.UnorderedArrayList;
-import pt.ipp.estg.data.structures.Map.HashMap;
+import ed.Utils.Map.HashMap;
+
 
 import java.util.Random;
 

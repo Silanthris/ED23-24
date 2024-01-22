@@ -1,9 +1,8 @@
 package ed.API.Game;
 
 import ed.API.Edge.Edge;
-import pt.ipp.estg.data.structures.List.UnorderedArrayList;
-import pt.ipp.estg.data.structures.List.ArrayList;
-import pt.ipp.estg.data.structures.Map.HashMap;
+import ed.Utils.Map.HashMap;
+import ed.Utils.List.UnorderedArrayList;
 
 
 public class Graph {

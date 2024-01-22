@@ -1,10 +1,11 @@
 package ed.Utils.Map;
 
-import pt.ipp.estg.data.structures.List.UnorderedLinkedList;
-import pt.ipp.estg.data.structures.List.UnorderedListADT;
-import pt.ipp.estg.data.structures.Map.MapADT;
 
-public class HashMap<K, V> implements pt.ipp.estg.data.structures.Map.MapADT<K, V> {
+import ed.Utils.List.UnorderedLinkedList;
+import ed.Utils.List.UnorderedListADT;
+import ed.Utils.Map.MapADT;
+
+public class HashMap<K, V> implements MapADT<K, V> {
     private final int DEFAULT_CAPACITY = 16;
     private final float DEFAULT_LOAD_FACTOR = 0.75f;
     private Entry<K, V>[] buckets;
@@ -79,8 +80,8 @@ public class HashMap<K, V> implements pt.ipp.estg.data.structures.Map.MapADT<K, 
         this.size++;
     }
 
-    public boolean putAll(pt.ipp.estg.data.structures.Map.MapADT.Entry<K, V>[] entries) {
-        for (pt.ipp.estg.data.structures.Map.MapADT.Entry<K, V> entry : entries) {
+    public boolean putAll(MapADT.Entry<K, V>[] entries) {
+        for (MapADT.Entry<K, V> entry : entries) {
             while (entry != null) {
                 this.put(entry.getKey(), entry.getValue());
                 entry = entry.getNext();
@@ -171,8 +172,8 @@ public class HashMap<K, V> implements pt.ipp.estg.data.structures.Map.MapADT<K, 
         return list;
     }
 
-    public UnorderedListADT<pt.ipp.estg.data.structures.Map.MapADT.Entry<K, V>> getEntries() {
-        UnorderedListADT<pt.ipp.estg.data.structures.Map.MapADT.Entry<K, V>> list = new UnorderedLinkedList<>();
+    public UnorderedListADT<MapADT.Entry<K, V>> getEntries() {
+        UnorderedListADT<MapADT.Entry<K, V>> list = new UnorderedLinkedList<>();
 
         for (Entry<K, V> entry : this.buckets) {
             if (entry != null) {
@@ -221,7 +222,12 @@ public class HashMap<K, V> implements pt.ipp.estg.data.structures.Map.MapADT<K, 
         return sb.toString();
     }
 
-    private static class Entry<K, V> implements pt.ipp.estg.data.structures.Map.MapADT.Entry<K, V> {
+    @Override
+    public MapADT<K, V> getNext() {
+        return null;
+    }
+
+    private static class Entry<K, V> implements MapADT.Entry<K, V> {
         private K key;
         private V value;
         private Entry<K, V> next;

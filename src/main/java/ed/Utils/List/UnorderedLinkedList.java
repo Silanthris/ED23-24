@@ -1,8 +1,7 @@
 package ed.Utils.List;
 
-import pt.ipp.estg.data.structures.Exceptions.EmptyCollectionException;
-import pt.ipp.estg.data.structures.List.LinkedList;
-import pt.ipp.estg.data.structures.List.UnorderedListADT;
+
+import ed.Utils.Exceptions.EmptyCollectionException;
 
 public class UnorderedLinkedList<T> extends LinkedList<T> implements UnorderedListADT<T> {
     public UnorderedLinkedList() {
