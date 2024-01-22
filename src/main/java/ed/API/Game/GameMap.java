@@ -57,9 +57,9 @@ public class GameMap {
     }
 
 
-    public void generateRandomGraph(int numLocations, boolean bidirectional, double edgeDensity) {
+    public void generateRandomGraph(int numLocations, boolean bidirectional) {
         // Validate input parameters
-        if (numLocations <= 0 || edgeDensity < 0 || edgeDensity > 1) {
+        if (numLocations <= 0 || density < 0 || density > 1) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
 
@@ -69,7 +69,6 @@ public class GameMap {
         this.adjMatrix = new boolean[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
         this.vertices = (T[]) (new EntitiesLocation[DEFAULT_CAPACITY]);
         */
-
 
         // Generate random locations
         Random random = new Random();
@@ -89,9 +88,9 @@ public class GameMap {
 
                 EntitiesLocation currentTemporary = resultListTemporary.next();
 
-                if (random.nextDouble() <= edgeDensity && current.getId() != currentTemporary.getId() ) {
+                if (random.nextDouble() <= density && current.getId() != currentTemporary.getId() ) {
 
-                    graph.addEdge(current, currentTemporary);
+                    graph.addEdge(current, currentTemporary, bidirectional, density);
 
                 }
 
@@ -111,8 +110,6 @@ public class GameMap {
             }
         }
         */
-
-
 
     }
 

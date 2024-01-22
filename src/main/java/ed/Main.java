@@ -15,11 +15,13 @@ public class Main {
         // Example usage
         int numLocations = 10;
         boolean bidirectional = true;
-        double density = 0.2;
+        double density = 0.5;
+        double densityCalculated = ((numLocations * (numLocations - 1)) * 0.5) / 100;
 
+        System.out.println(densityCalculated);
 
-        GameMap gameMap = new GameMap(bidirectional, density);
-        gameMap.generateRandomGraph(numLocations,bidirectional,density);
+        GameMap gameMap = new GameMap(bidirectional, densityCalculated);
+        gameMap.generateRandomGraph(numLocations,bidirectional);
 
         gameMap.printGraph();
 

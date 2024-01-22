@@ -86,7 +86,7 @@ public class Graph<T> implements GraphADT<T> {
         this.numVertices--;
     }
 
-    public void addEdge(T vertex1, T vertex2, boolean bidirectional) {
+    public void addEdge(T vertex1, T vertex2, boolean bidirectional, double density) {
         int index1 = this.getIndex(vertex1);
         int index2 = this.getIndex(vertex2);
         if (this.indexInvalid(index1) || this.indexInvalid(index2)) throw new IllegalArgumentException();
@@ -97,8 +97,7 @@ public class Graph<T> implements GraphADT<T> {
 
         if(bidirectional){
             Double random = Math.random();
-            System.out.println(random);
-            if(random>0.5) this.adjMatrix[index2][index1] = true;
+            if(random>density) this.adjMatrix[index2][index1] = true;
         }
         else this.adjMatrix[index2][index1] = true;
     }
