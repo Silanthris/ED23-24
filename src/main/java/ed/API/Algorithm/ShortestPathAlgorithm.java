@@ -8,17 +8,15 @@ import java.util.Iterator;
 
 public class ShortestPathAlgorithm implements Algorithm {
     @Override
-    public void move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation) {
+    public EntitiesLocation move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation) {
 
         Iterator<EntitiesLocation> iterator = graph.iteratorShortestPath(bot.getLocation(), otherPlayerLocation);
 
-        while (iterator.hasNext()) {
-            EntitiesLocation vertex = iterator.next();
-            System.out.println(vertex.getId());
+        if(!iterator.hasNext()) return null;
 
+        iterator.next(); //skip his location
 
-        }
-
+        return iterator.next();
     }
 
 
