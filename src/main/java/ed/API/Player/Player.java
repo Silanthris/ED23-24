@@ -18,8 +18,6 @@ public class Player {
     public Player() {
         this.bots = new UnorderedArrayList<>();
         this.availableAlgorithms = new UnorderedArrayList<Algorithm>();
-
-
         this.availableAlgorithms.addToRear(new RandomMovementAlgorithm());
         this.availableAlgorithms.addToRear(new ShortestPathAlgorithm());
     }

@@ -1,5 +1,6 @@
 package ed.API.Game;
 
+import ed.API.Bot.Bot;
 import ed.API.Player.Player;
 
 import java.util.Iterator;
@@ -11,12 +12,9 @@ public class GameMap {
 
     private Player player1;
     private Player player2;
-    // ... (other code)
-
     private final Graph<EntitiesLocation> graph;
     private final boolean bidirectional;
     private final double density;
-
     private int currentRound;
     private Player currentPlayer;
 
@@ -88,7 +86,7 @@ public class GameMap {
 
                 EntitiesLocation currentTemporary = resultListTemporary.next();
 
-                if (random.nextDouble() <= density && current.getId() != currentTemporary.getId() ) {
+                if (random.nextDouble() <= density && current.getId() != currentTemporary.getId()) {
 
                     graph.addEdge(current, currentTemporary, bidirectional, density);
 
@@ -139,6 +137,83 @@ public class GameMap {
 
         }
 
+    }
+
+    public void selectFlagLocations(int player1Flag, int player2Flag) {
+
+        Iterator<EntitiesLocation> verticesIterator = graph.getVertices();
+        while (verticesIterator.hasNext()) {
+            EntitiesLocation vertex = verticesIterator.next();
+
+            if (player1Flag == vertex.getId()) {
+                vertex.setPlayer1Flag(true);
+            }
+
+            if (player2Flag == vertex.getId()) {
+                vertex.setPlayer2Flag(true);
+            }
+
+        }
+
+    }
+
+    public void startGame() {
+        Random random = new Random();
+        currentRound = 1;
+        currentPlayer = random.nextBoolean() ? player1 : player2; // Randomly decide the starting player
+        moveBotsToFlag(player1);
+        moveBotsToFlag(player2);
+    }
+
+    private void moveBotsToFlag(Player player) {
+        EntitiesLocation flagLocation = findPlayerFlagLocation(player);
+
+        for (Bot bot : player.getBots()) {
+            bot.setLocation(flagLocation);
+        }
+    }
+
+    private EntitiesLocation findPlayerFlagLocation(Player player) {
+
+        Iterator<EntitiesLocation> verticesIterator = graph.getVertices();
+        while (verticesIterator.hasNext()) {
+            EntitiesLocation vertex = verticesIterator.next();
+
+            if ((player == player1 && vertex.isPlayer1Flag()) || (player == player2 && vertex.isPlayer2Flag())) {
+                return vertex;
+            }
+
+        }
+
+        return null; // Handle the case where the flag location is not found
+
+    }
+
+    public void playRound() {
+
+        EntitiesLocation otherPlayerLocation ;
+
+        System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
+        int currentPlayerInt = (currentPlayer == player1 ? 1 : 2);
+
+        int botIndex = 0;
+        for (Bot bot : currentPlayer.getBots()) {
+
+            otherPlayerLocation = findPlayerFlagLocation((currentPlayer == player1) ? player2 : player1 );
+
+            if (otherPlayerLocation != null) {
+                //System.out.println(otherPlayerLocation.getId());
+            }
+
+            bot.getAlgorithm().move(bot, graph, otherPlayerLocation);
+
+
+        }
+
+
+        // Alternar para o próximo jogador na próxima ronda
+        currentPlayer = (currentPlayer == player1) ? player2 : player1;
+        currentRound++;
     }
 
 /*

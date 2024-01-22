@@ -15,7 +15,7 @@ public class Main {
         // Example usage
         int numLocations = 10;
         boolean bidirectional = true;
-        double density = 0.5;
+        double density = 0.4;
         double densityCalculated = ((numLocations * (numLocations - 1)) * 0.5) / 100;
 
         System.out.println(densityCalculated);
@@ -25,23 +25,6 @@ public class Main {
 
         gameMap.printGraph();
 
-
-
-
-      /*
-        GameMap gameMap = new GameMap(bidirectional, density);
-        gameMap.generateMap(numLocations,bidirectional,density);
-
-        // Access the graph to retrieve locations, edges, and distances
-        Graph graph = gameMap.getGraph();
-
-        for (EntitiesLocation location : graph.getLocations().getValues()) {
-            System.out.println("Location " + location.getId() + ": (" + location.getX() + ", " + location.getY() + ")");
-        }
-
-        for (Edge edge : graph.getEdges()) {
-            System.out.println("Edge: " + edge.getSource().getId() + " -> " + edge.getDestination().getId() + " (Distance: " + edge.getDistance() + " km)");
-        }
 
         // Permita que os jogadores selecionem as localizações das bandeiras
         Scanner scanner = new Scanner(System.in);
@@ -62,10 +45,10 @@ public class Main {
         int numBotsPlayer2 = scanner.nextInt();
         gameMap.getPlayer2().setNumBots(numBotsPlayer2);
 
-        // ... (rest of the code for accessing the map, exporting, etc.)
-
         // Start the game, deciding randomly which player begins and placing bots at flag locations
         gameMap.startGame();
+
+        int counter = 0;
 
         while(gameMap.getCurrentRound() != 0){
 
@@ -74,12 +57,15 @@ public class Main {
 
             gameMap.playRound();
 
-            gameMap.setCurrentRound(0);
+            counter++;
 
+            if(counter > 2){
+                gameMap.setCurrentRound(0);
+            }
 
 
         }
-*/
+
     }
 
 }

@@ -2,13 +2,22 @@ package ed.API.Algorithm;
 
 import ed.API.Bot.Bot;
 import ed.API.Game.EntitiesLocation;
-import ed.API.Game.GameMap;
+import ed.Utils.Graph.Graph;
 
-import ed.API.Game.Graph;
-import ed.Utils.Map.HashMap;
+import java.util.Iterator;
+
 public class ShortestPathAlgorithm implements Algorithm {
     @Override
-    public void move(Bot bot, Graph graph) {
+    public void move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation) {
+
+        Iterator<EntitiesLocation> iterator = graph.iteratorShortestPath(bot.getLocation(), otherPlayerLocation);
+
+        while (iterator.hasNext()) {
+            EntitiesLocation vertex = iterator.next();
+            System.out.println(vertex.getId());
+
+
+        }
 
     }
 
