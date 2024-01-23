@@ -10,15 +10,24 @@ import java.util.Iterator;
 
 public class ClosestAlgorithm implements Algorithm {
 
+    /**
+     * Moves the given bot to the adjacent vertex with the closest ID based on the provided graph.
+     * The algorithm aims to choose the vertex with the closest ID to the current location of the bot.
+     * If the graph does not contain any adjacent vertices, the bot remains in its current location.
+     *
+     * @param bot The bot to be moved.
+     * @param graph The graph containing vertices and edges.
+     * @param otherPlayerLocation The location of the other player, which may influence the bot's decision.
+     * @return The new location for the bot after the move.
+     */
     @Override
     public EntitiesLocation move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation) {
-
-
+        // Get the ID of the adjacent vertex with the closest ID
         int idVertex = graph.getAdjacentClosestVertices(bot.getLocation());
         System.out.println(idVertex);
 
+        // Iterate through the vertices to find the one with the specified ID
         Iterator<EntitiesLocation> vertices = graph.getVertices();
-
         while (vertices.hasNext()) {
             EntitiesLocation currentVertex = vertices.next();
 
@@ -28,8 +37,7 @@ public class ClosestAlgorithm implements Algorithm {
             }
         }
 
+        // Return the current location if the specified ID is not found in the graph
         return bot.getLocation();
-
-
     }
 }
