@@ -28,8 +28,15 @@ public class Player {
     }
 
 
+    /**
+     * Sets the number of bots and their corresponding algorithms based on user input.
+     * Allows the user to choose an algorithm for each bot from a predefined list.
+     * The selected algorithms are associated with the respective bots.
+     *
+     * @param numBots The number of bots to be created and associated with algorithms.
+     * @throws IllegalArgumentException if the selected algorithm index is invalid.
+     */
     public void setNumBots(int numBots) {
-
         Scanner scanner = new Scanner(System.in);
         UnorderedArrayList<Algorithm> selectedAlgorithms = new UnorderedArrayList<>();
 
@@ -42,7 +49,6 @@ public class Player {
             System.out.println("3. Teleport, esta é a tatica dos deuses");
             System.out.println("4. Test");
 
-
             int selectedAlgorithmIndex;
             do {
                 System.out.print("Enter the number of the desired algorithm: ");
@@ -52,8 +58,8 @@ public class Player {
             Algorithm selectedAlgorithm = switch (selectedAlgorithmIndex) {
                 case 1 -> new ShortestPathAlgorithm(); // Replace with your actual ShortestPathAlgorithm class
                 case 2 -> new RandomMovementAlgorithm(); // Replace with your actual RandomMovementAlgorithm class
-                case 3 -> new TeleportAlgorithm(); // Replace with your actual LeastWeightAlgorithm class
-                case 4 -> new ClosestAlgorithm(); // Replace with your actual LeastWeightAlgorithm class
+                case 3 -> new TeleportAlgorithm(); // Replace with your actual TeleportAlgorithm class
+                case 4 -> new ClosestAlgorithm(); // Replace with your actual TestAlgorithm class
 
                 default -> throw new IllegalArgumentException("Invalid algorithm index");
             };
@@ -61,8 +67,6 @@ public class Player {
             selectedAlgorithms.addToRear(selectedAlgorithm);
             bot.setAlgorithm(selectedAlgorithm);
             bots.addToRear(bot);
-
-
         }
     }
 }
