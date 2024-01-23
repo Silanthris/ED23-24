@@ -7,6 +7,9 @@ import ed.Utils.Graph.Graph;
 
 public interface Algorithm {
     // Define the methods required for algorithms
+
+    String getName();
+
     EntitiesLocation move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation);
 
 }

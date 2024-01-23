@@ -2,6 +2,7 @@ package ed.API.Algorithm;
 
 import ed.API.Bot.Bot;
 import ed.API.Game.EntitiesLocation;
+import ed.API.Player.Player;
 import ed.Utils.Graph.Graph;
 import ed.Utils.List.UnorderedArrayList;
 
@@ -9,6 +10,19 @@ import java.util.Iterator;
 
 
 public class ClosestAlgorithm implements Algorithm {
+
+
+
+    private final String name;
+
+    public ClosestAlgorithm() {
+        this.name = "ClosestAlgorithm";
+
+    }
+
+    public String getName() {
+        return name;
+    }
 
     /**
      * Moves the given bot to the adjacent vertex with the closest ID based on the provided graph.
@@ -24,7 +38,6 @@ public class ClosestAlgorithm implements Algorithm {
     public EntitiesLocation move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation) {
         // Get the ID of the adjacent vertex with the closest ID
         int idVertex = graph.getAdjacentClosestVertices(bot.getLocation());
-        System.out.println(idVertex);
 
         // Iterate through the vertices to find the one with the specified ID
         Iterator<EntitiesLocation> vertices = graph.getVertices();

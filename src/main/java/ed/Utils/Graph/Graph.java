@@ -249,6 +249,7 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
+    // Não Usar
     public Iterator<T> iteratorTeleportPath(T startVertex, T targetVertex) {
         UnorderedListADT<T> resultList = new UnorderedArrayList<>();
 

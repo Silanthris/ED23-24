@@ -6,6 +6,7 @@ import ed.API.Bot.Bot;
 import ed.Utils.List.UnorderedArrayList;
 import ed.Utils.List.ArrayList;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Player implements IPlayer {
@@ -36,7 +37,7 @@ public class Player implements IPlayer {
      * @param numBots The number of bots to be created and associated with algorithms.
      * @throws IllegalArgumentException if the selected algorithm index is invalid.
      */
-    public void setNumBots(int numBots) {
+    public void setNumBots2(int numBots) {
         Scanner scanner = new Scanner(System.in);
         UnorderedArrayList<Algorithm> selectedAlgorithms = new UnorderedArrayList<>();
 
@@ -47,7 +48,7 @@ public class Player implements IPlayer {
             System.out.println("1. Shortest Path");
             System.out.println("2. Random Movement");
             System.out.println("3. Teleport, esta é a tatica dos deuses");
-            System.out.println("4. Test");
+            System.out.println("4. Closest Vertex");
 
             int selectedAlgorithmIndex;
             do {
@@ -69,4 +70,77 @@ public class Player implements IPlayer {
             bots.addToRear(bot);
         }
     }
+
+    public void setNumBots(int numBots) {
+        Scanner scanner = new Scanner(System.in);
+        UnorderedArrayList<Algorithm> availableAlgorithms = new UnorderedArrayList<>();
+        availableAlgorithms.addToRear(new ShortestPathAlgorithm());
+        availableAlgorithms.addToRear(new RandomMovementAlgorithm());
+        //availableAlgorithms.addToRear(new TeleportAlgorithm());
+        availableAlgorithms.addToRear(new ClosestAlgorithm());
+
+        int botIndex = 1;
+
+        for (int i = 0; i < numBots; i++) {
+            Bot bot = new Bot();
+
+            System.out.println("Choose an algorithm for Bot " + (i + 1) + ":");
+            printAvailableAlgorithms(availableAlgorithms);
+
+            Algorithm selectedAlgorithm = null;
+            int selectedIndex = 0;
+            int selectedAlgorithmIndex = 0;
+
+            do {
+                System.out.print("Enter the number of the desired algorithm: ");
+                selectedAlgorithmIndex = scanner.nextInt();
+
+                if(selectedAlgorithmIndex > availableAlgorithms.size()){
+                    System.out.print("Algorithm doesn't exist");
+                } else {
+                    // Find the selected algorithm using the iterator
+                    Iterator<Algorithm> iterator = availableAlgorithms.iterator();
+                    for (int j = 1; j <= selectedAlgorithmIndex; j++) {
+                        selectedAlgorithm = iterator.next();
+                        selectedIndex = j;
+                    }
+                }
+
+
+            } while (selectedIndex != selectedAlgorithmIndex);
+
+
+            // Remove the selected algorithm from the list
+
+
+            bot.setAlgorithm(selectedAlgorithm);
+            availableAlgorithms.remove(selectedAlgorithm);
+            bots.addToRear(bot);
+            botIndex++;
+
+            if(botIndex > 4){
+                availableAlgorithms.addToRear(new ShortestPathAlgorithm());
+                availableAlgorithms.addToRear(new RandomMovementAlgorithm());
+                //availableAlgorithms.addToRear(new TeleportAlgorithm());
+                availableAlgorithms.addToRear(new ClosestAlgorithm());
+                botIndex = 1;
+            }
+
+
+        }
+    }
+
+    private void printAvailableAlgorithms(UnorderedArrayList<Algorithm> algorithms) {
+        Iterator<Algorithm> iterator = algorithms.iterator();
+        int index = 1;
+
+        while (iterator.hasNext()) {
+            Algorithm current = iterator.next();
+
+            System.out.println(index + ". " + current.getName());
+            index++;
+        }
+    }
+
+
 }

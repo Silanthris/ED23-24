@@ -10,6 +10,18 @@ import java.util.Iterator;
 
 public class RandomMovementAlgorithm implements Algorithm {
 
+
+    private final String name;
+
+    public RandomMovementAlgorithm() {
+        this.name = "RandomMovementAlgorithm";
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
     /**
      * Moves the given bot to an unvisited adjacent vertex using the shortest path algorithm based on the provided graph.
      * The algorithm selects the next unvisited vertex as the destination and calculates the shortest path from the

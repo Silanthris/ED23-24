@@ -8,6 +8,18 @@ import java.util.Iterator;
 
 public class TeleportAlgorithm implements Algorithm {
 
+
+    private final String name;
+
+    public TeleportAlgorithm() {
+        this.name = "TeleportAlgorithm";
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
     /**
      * Moves the given bot towards the specified destination using a teleportation path algorithm based on the provided graph.
      * The algorithm calculates a teleportation path from the current location of the bot to the destination (excluding the

@@ -160,7 +160,7 @@ public class GameMap implements IGameMap {
 
         while (verticesIterator.hasNext()) {
             EntitiesLocation vertex = verticesIterator.next();
-            System.out.println("Vertex " + vertex.getId() + ": (" + vertex.getX() + ", " + vertex.getY() + ")");
+            System.out.println("Vertex " + (vertex.getId() + 1) + ": (" + vertex.getX() + ", " + vertex.getY() + ")");
         }
 
         System.out.println("\nEdges (Adjacency Matrix):");
@@ -173,7 +173,7 @@ public class GameMap implements IGameMap {
 
             while (adjMatrix.hasNext()) {
                 EntitiesLocation adjacent = adjMatrix.next();
-                System.out.println("Edge: (" + current.getId() + ") -> (" + adjacent.getId() + ")");
+                System.out.println("Edge: (" + (current.getId()+ 1) + ") -> (" + (adjacent.getId() + 1) + ")");
             }
         }
     }

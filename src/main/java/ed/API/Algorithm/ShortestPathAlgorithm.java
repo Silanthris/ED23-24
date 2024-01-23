@@ -7,6 +7,20 @@ import ed.Utils.Graph.Graph;
 import java.util.Iterator;
 
 public class ShortestPathAlgorithm implements Algorithm {
+
+
+    private final String name;
+
+    public ShortestPathAlgorithm() {
+        this.name = "ShortestPathAlgorithm";
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
     /**
      * Moves the given bot towards the specified destination using the shortest path algorithm based on the provided graph.
      * The algorithm calculates the shortest path from the current location of the bot to the destination (excluding the
