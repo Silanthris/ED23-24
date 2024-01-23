@@ -4,6 +4,15 @@ import java.util.Scanner;
 
 public class getDoubleInput {
 
+    /**
+     * Prompts the user with the specified message to enter a decimal number within the specified range.
+     * Repeatedly prompts the user until a valid decimal number within the given range is provided.
+     *
+     * @param prompt The message to prompt the user with.
+     * @param min The minimum allowed value (inclusive).
+     * @param max The maximum allowed value (inclusive).
+     * @return The decimal number entered by the user within the specified range.
+     */
     public static double getDoubleInput(String prompt, double min, double max) {
         Scanner scanner = new Scanner(System.in);
         double userInput;
