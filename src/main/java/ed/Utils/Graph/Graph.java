@@ -1,6 +1,7 @@
 package ed.Utils.Graph;
 
 
+import ed.API.Game.EntitiesLocation;
 import ed.Utils.Graph.GraphADT;
 import ed.Utils.List.UnorderedArrayList;
 import ed.Utils.List.UnorderedListADT;
@@ -52,6 +53,14 @@ public class Graph<T> implements GraphADT<T> {
         return -1;
     }
 
+    public T getVerticeByIndex(int index) {
+
+        if(index>this.numVertices) throw new IllegalArgumentException();
+
+        return this.vertices[index];
+
+    }
+
     protected boolean indexInvalid(int index) {
         return index < 0 || index >= this.numVertices;
     }
@@ -100,18 +109,19 @@ public class Graph<T> implements GraphADT<T> {
         int index2 = this.getIndex(vertex2);
         if (this.indexInvalid(index1) || this.indexInvalid(index2)) throw new IllegalArgumentException();
 
-        if (!this.adjMatrix[index1][index2] || !this.adjMatrix[index2][index1]) {
+        if (!this.adjMatrix[index1][index2]) {
             this.adjMatrix[index1][index2] = true;
             this.adjWeightMatrix[index1][index2] = weight;
         }
 
-        if (bidirectional) {
+        if (bidirectional && !this.adjMatrix[index2][index1]) {
             double random = Math.random();
             if (random > density) {
                 this.adjMatrix[index2][index1] = true;
                 this.adjWeightMatrix[index1][index2] = weight;
             }
-        } else {
+        }
+        else if(!this.adjMatrix[index2][index1]) {
             this.adjMatrix[index2][index1] = true;
             this.adjWeightMatrix[index1][index2] = weight;
         }
@@ -410,6 +420,14 @@ public class Graph<T> implements GraphADT<T> {
         }
 
         return resultList.iterator();
+    }
+
+    public boolean[][] getAdjMatrix(){
+        return adjMatrix;
+    }
+
+    public double[][] getAdjWeightMatrix(){
+        return adjWeightMatrix;
     }
 
     public boolean isConnected() {
