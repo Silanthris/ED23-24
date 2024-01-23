@@ -1,6 +1,7 @@
 package ed.Utils.Graph;
 
 
+import ed.API.Bot.Bot;
 import ed.API.Game.EntitiesLocation;
 import ed.Utils.Graph.GraphADT;
 import ed.Utils.List.UnorderedArrayList;
@@ -10,7 +11,6 @@ import ed.Utils.Queue.LinkedQueue;
 import ed.Utils.Stack.LinkedStack;
 import ed.Utils.Stack.StackADT;
 import ed.Utils.Exceptions.EmptyCollectionException;
-
 import java.util.Iterator;
 
 public class Graph<T> implements GraphADT<T> {
@@ -41,6 +41,14 @@ public class Graph<T> implements GraphADT<T> {
         this.vertices = largerVertices;
         this.adjMatrix = largerAdjMatrix;
         this.adjWeightMatrix = largerAdjWeightMatrix;
+    }
+
+    public boolean[][] getAdjMatrix() {
+        return adjMatrix;
+    }
+
+    public double[][] getAdjWeightMatrix() {
+        return adjWeightMatrix;
     }
 
     protected int getIndex(T vertex) {
@@ -202,7 +210,6 @@ public class Graph<T> implements GraphADT<T> {
         int targetIndex = getIndex(targetVertex);
         if (indexInvalid(startIndex) || indexInvalid(targetIndex) || (startIndex == targetIndex))
             return resultList.iterator();
-
         double[] distances = new double[numVertices];
         int[] predecessors = new int[numVertices];
         boolean[] visited = new boolean[numVertices];
@@ -242,55 +249,7 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
-    /*
-    public Iterator<T> iteratorLongestPath(T startVertex, T targetVertex) {
-        UnorderedListADT<T> resultList = new UnorderedArrayList<>();
-
-        int startIndex = startVertex == null ? 0 : getIndex(startVertex);
-        int targetIndex = getIndex(targetVertex);
-        if (indexInvalid(startIndex) || indexInvalid(targetIndex) || (startIndex == targetIndex))
-            return resultList.iterator();
-
-        double[] distances = new double[numVertices];
-        int[] predecessors = new int[numVertices];
-        boolean[] visited = new boolean[numVertices];
-
-        for (int i = 0; i < numVertices; i++) {
-            distances[i] = Double.NEGATIVE_INFINITY; // Set initial distances to negative infinity
-        }
-        distances[startIndex] = 0;
-
-        for (int i = 0; i < numVertices - 1; i++) {
-            int currentVertex = getMaxDistanceVertex(distances, visited); // Change the method to find max distance
-
-            if (currentVertex == -1) {
-                currentVertex = 1;
-            }
-
-            visited[currentVertex] = true;
-
-            for (int j = 0; j < numVertices; j++) {
-                if (!visited[j] && adjMatrix[currentVertex][j] && distances[currentVertex] != Double.NEGATIVE_INFINITY
-                        && distances[currentVertex] - adjWeightMatrix[currentVertex][j] > distances[j]) {
-                    distances[j] = distances[currentVertex] - adjWeightMatrix[currentVertex][j];
-                    predecessors[j] = currentVertex;
-                }
-            }
-        }
-
-        int currentVertex = targetIndex;
-        while (currentVertex != startIndex) {
-            resultList.addToFront(vertices[currentVertex]);
-            currentVertex = predecessors[currentVertex];
-        }
-        resultList.addToFront(vertices[startIndex]);
-
-        return resultList.iterator();
-    }
-*/
-
-
-    public Iterator<T> iteratorLeastWeightPath(T startVertex, T targetVertex) {
+    public Iterator<T> iteratorTeleportPath(T startVertex, T targetVertex) {
         UnorderedListADT<T> resultList = new UnorderedArrayList<>();
 
         int startIndex = startVertex == null ? 0 : getIndex(startVertex);
@@ -313,6 +272,8 @@ public class Graph<T> implements GraphADT<T> {
             }
 
             resultList.addToFront(vertices[nextVertex]);
+
+            // Update the currentVertex for the next iteration
             currentVertex = nextVertex;
         }
 
@@ -367,32 +328,41 @@ public class Graph<T> implements GraphADT<T> {
         return minDistanceVertex;
     }
 
-    private int getMinWeightEdge(int currentVertex, boolean[] visited) {
+    private int getMinWeightEdge(int vertex, boolean[] visited) {
+        int nextVertex = -1;
         double minWeight = Double.POSITIVE_INFINITY;
-        int minWeightVertex = -1;
-
-        for (int j = 0; j < numVertices; j++) {
-            if (!visited[j] && adjMatrix[currentVertex][j] && adjWeightMatrix[currentVertex][j] < minWeight) {
-                minWeight = adjWeightMatrix[currentVertex][j];
-                minWeightVertex = j;
-            }
-        }
-
-        return minWeightVertex;
-    }
-
-    private int getMaxDistanceVertex(double[] distances, boolean[] visited) {
-        double maxDistance = Double.NEGATIVE_INFINITY;
-        int maxDistanceVertex = -1;
 
         for (int i = 0; i < numVertices; i++) {
-            if (!visited[i] && distances[i] > maxDistance) {
-                maxDistance = distances[i];
-                maxDistanceVertex = i;
+            if (!visited[i] && adjMatrix[vertex][i] && adjWeightMatrix[vertex][i] < minWeight) {
+                minWeight = adjWeightMatrix[vertex][i];
+                nextVertex = i;
             }
         }
 
-        return maxDistanceVertex;
+        return nextVertex;
+    }
+
+    public int getAdjacentClosestVertices(T vertex) {
+
+        Iterator<T> adj = getAdjacentVertices(vertex);
+        int pos = this.getIndex(vertex);
+        int idClosest = 0;
+        double currentLowWeight = 0;
+
+        for (int i = 0; i < this.numVertices; i++) {
+            if (this.adjMatrix[pos][i]) {
+
+                if (adjWeightMatrix[pos][i] > currentLowWeight) {
+
+                    currentLowWeight = adjWeightMatrix[pos][i];
+                    idClosest = i;
+
+                }
+
+            }
+        }
+
+        return idClosest;
     }
 
     public Iterator<T> getAdjacentVertices(T vertex) {
@@ -422,13 +392,6 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
-    public boolean[][] getAdjMatrix(){
-        return adjMatrix;
-    }
-
-    public double[][] getAdjWeightMatrix(){
-        return adjWeightMatrix;
-    }
 
     public boolean isConnected() {
         if (this.isEmpty()) return false;

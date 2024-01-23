@@ -12,7 +12,7 @@ public class GameMap {
 
     private Player player1;
     private Player player2;
-    private final Graph<EntitiesLocation> graph;
+    private Graph<EntitiesLocation> graph;
     private final boolean bidirectional;
     private final double density;
     private int currentRound;
@@ -29,6 +29,10 @@ public class GameMap {
 
     public Graph<EntitiesLocation> getGraph() {
         return graph;
+    }
+
+    public void setGraph(Graph<EntitiesLocation> newGraph) {
+        this.graph = newGraph;
     }
 
     public int getRoundsWithoutMove() {
@@ -69,10 +73,10 @@ public class GameMap {
      * Random locations are created with random coordinates, and edges between locations are added based on the given density.
      * Additionally, edges are only added between locations with an ID difference of either 5 or -5.
      *
-     * @param numLocations The number of locations (vertices) to generate in the graph.
+     * @param numLocations  The number of locations (vertices) to generate in the graph.
      * @param bidirectional Flag indicating whether the edges should be bidirectional.
-     * @param density The connectivity density, indicating the probability of adding an edge between two locations.
-     *                Must be in the range [0, 1].
+     * @param density       The connectivity density, indicating the probability of adding an edge between two locations.
+     *                      Must be in the range [0, 1].
      * @throws IllegalArgumentException if the input parameters are invalid (numLocations <= 0, density < 0, or density > 1).
      */
     public void generateRandomGraphWithRules(int numLocations, boolean bidirectional, double density) {

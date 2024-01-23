@@ -1,6 +1,10 @@
 package ed;
 
+import ed.API.Files.Export;
+import ed.API.Files.Import;
+import ed.API.Game.EntitiesLocation;
 import ed.API.Game.GameMap;
+import ed.Utils.Graph.Graph;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -29,15 +33,15 @@ public class Main {
         System.out.println("2. Import an existing map");
 
         int choice = getUserChoice(scanner);
+        GameMap gameMap = new GameMap(bidirectional, density);
 
-        GameMap gameMap = null;
         if (choice == 1) {
 
             numLocations = getIntegerInput("Enter the number of locations (max 45): ", 1, 45);
             bidirectional = getBooleanInput("Should paths be bidirectional? (true/false): ");
             density = getDoubleInput("Enter the density (max 1.0): ", 0.0, 1.0);
 
-            gameMap = new GameMap(bidirectional, density);
+
             gameMap.generateRandomGraph(numLocations, bidirectional);
             //gameMap.generateRandomGraphWithRules(numLocations, bidirectional,density);
 
@@ -46,8 +50,13 @@ public class Main {
             //gameMap.printMatrixWeight(gameMap.getGraph().getAdjWeightMatrix(),numLocations);
 
         } else {
-            // User chose to import an existing map
-            //importExistingMap();
+
+            Import fileImport = new Import();
+
+            Graph<EntitiesLocation> graphImport = fileImport.importGame();
+
+            gameMap.setGraph(graphImport);
+            numLocations = graphImport.size();
         }
 
 
@@ -80,13 +89,13 @@ public class Main {
             Boolean victoryCheck = gameMap.checkVictoryCondition();
 
             if (victoryCheck) {
-                System.out.println("MAN GANHOU");
-                showMenuAndProcessChoice();
+                System.out.println("Vitoria do Player corrente");
+                showMenuAndProcessChoice(gameMap,density,bidirectional);
                 break;
             }
 
             if (gameMap.getRoundsWithoutMove() >= 5) {
-                showMenuAndProcessChoice();
+                showMenuAndProcessChoice(gameMap,density,bidirectional);
                 System.out.println("Empate");
                 break;
             }
@@ -109,7 +118,7 @@ public class Main {
      * - If the user chooses 2, the method calls the endGame() method and returns from the method or loop depending on your needs.
      * - If the user enters an invalid choice, an error message is displayed, and the user is prompted to enter 1 or 2 again.
      */
-    public static void showMenuAndProcessChoice() {
+    public static void showMenuAndProcessChoice(GameMap gameMap, double density,boolean bidirectional) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -131,7 +140,8 @@ public class Main {
             // Process user choice
             switch (choice) {
                 case 1:
-                    //exportMap();
+                    Export fileExport = new Export(gameMap.getGraph(),density,bidirectional);
+                    fileExport.exportGame();
                     break;
                 case 2:
                     //endGame();
