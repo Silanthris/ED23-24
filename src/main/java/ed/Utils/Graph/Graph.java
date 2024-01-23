@@ -233,6 +233,7 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
+    /*
     public Iterator<T> iteratorLongestPath(T startVertex, T targetVertex) {
         UnorderedListADT<T> resultList = new UnorderedArrayList<>();
 
@@ -277,7 +278,7 @@ public class Graph<T> implements GraphADT<T> {
 
         return resultList.iterator();
     }
-
+*/
 
     // Calculates the length of the shortest path from startVertex to targetVertex based on edge weights
     public double shortestPathLength(T startVertex, T targetVertex) {
