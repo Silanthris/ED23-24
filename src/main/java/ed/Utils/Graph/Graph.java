@@ -78,8 +78,8 @@ public class Graph<T> implements GraphADT<T> {
         for (int i = 0; i < this.numVertices; i++) {
             if (this.adjMatrix[pos][i]) this.adjMatrix[pos][i] = false;
             if (this.adjMatrix[i][pos]) this.adjMatrix[i][pos] = false;
-            if (this.adjWeightMatrix[pos][i]!=0) this.adjWeightMatrix[pos][i] = 0;
-            if (this.adjWeightMatrix[i][pos]!=0) this.adjWeightMatrix[i][pos] = 0;
+            if (this.adjWeightMatrix[pos][i] != 0) this.adjWeightMatrix[pos][i] = 0;
+            if (this.adjWeightMatrix[i][pos] != 0) this.adjWeightMatrix[i][pos] = 0;
         }
 
         for (int i = pos; i < this.numVertices - 1; i++) {
@@ -105,14 +105,13 @@ public class Graph<T> implements GraphADT<T> {
             this.adjWeightMatrix[index1][index2] = weight;
         }
 
-        if(bidirectional){
+        if (bidirectional) {
             double random = Math.random();
-            if(random>density) {
+            if (random > density) {
                 this.adjMatrix[index2][index1] = true;
                 this.adjWeightMatrix[index1][index2] = weight;
             }
-        }
-        else {
+        } else {
             this.adjMatrix[index2][index1] = true;
             this.adjWeightMatrix[index1][index2] = weight;
         }
@@ -207,10 +206,10 @@ public class Graph<T> implements GraphADT<T> {
             int currentVertex = getMinDistanceVertex(distances, visited);
 
             if (currentVertex == -1) {
-               currentVertex = 1;
+                currentVertex = 1;
             }
 
-           // System.out.println(currentVertex);
+            // System.out.println(currentVertex);
             //System.out.println(numVertices);
             visited[currentVertex] = true;
 
@@ -280,6 +279,39 @@ public class Graph<T> implements GraphADT<T> {
     }
 */
 
+
+    public Iterator<T> iteratorLeastWeightPath(T startVertex, T targetVertex) {
+        UnorderedListADT<T> resultList = new UnorderedArrayList<>();
+
+        int startIndex = startVertex == null ? 0 : getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+        if (indexInvalid(startIndex) || indexInvalid(targetIndex) || (startIndex == targetIndex))
+            return resultList.iterator();
+
+        boolean[] visited = new boolean[numVertices];
+
+        int currentVertex = startIndex;
+
+        while (currentVertex != targetIndex) {
+            visited[currentVertex] = true;
+
+            int nextVertex = getMinWeightEdge(currentVertex, visited);
+
+            if (nextVertex == -1) {
+                // No unvisited neighbors with valid edges
+                break;
+            }
+
+            resultList.addToFront(vertices[nextVertex]);
+            currentVertex = nextVertex;
+        }
+
+        resultList.addToFront(vertices[startIndex]);
+
+        return resultList.iterator();
+    }
+
+
     // Calculates the length of the shortest path from startVertex to targetVertex based on edge weights
     public double shortestPathLength(T startVertex, T targetVertex) {
         int startIndex = startVertex == null ? 0 : getIndex(startVertex);
@@ -323,6 +355,20 @@ public class Graph<T> implements GraphADT<T> {
         }
 
         return minDistanceVertex;
+    }
+
+    private int getMinWeightEdge(int currentVertex, boolean[] visited) {
+        double minWeight = Double.POSITIVE_INFINITY;
+        int minWeightVertex = -1;
+
+        for (int j = 0; j < numVertices; j++) {
+            if (!visited[j] && adjMatrix[currentVertex][j] && adjWeightMatrix[currentVertex][j] < minWeight) {
+                minWeight = adjWeightMatrix[currentVertex][j];
+                minWeightVertex = j;
+            }
+        }
+
+        return minWeightVertex;
     }
 
     private int getMaxDistanceVertex(double[] distances, boolean[] visited) {

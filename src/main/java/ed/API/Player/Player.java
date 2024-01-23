@@ -1,6 +1,7 @@
 package ed.API.Player;
 
 import ed.API.Algorithm.Algorithm;
+import ed.API.Algorithm.LeastWeightAlgorithm;
 import ed.API.Algorithm.RandomMovementAlgorithm;
 import ed.API.Algorithm.ShortestPathAlgorithm;
 import ed.API.Bot.Bot;
@@ -41,7 +42,8 @@ public class Player {
             System.out.println("Choose an algorithm for Bot " + (i + 1) + ":");
             System.out.println("1. Shortest Path");
             System.out.println("2. Random Movement");
-           
+            System.out.println("3. Distancia Menor");
+
 
             int selectedAlgorithmIndex;
             do {
@@ -52,7 +54,7 @@ public class Player {
             Algorithm selectedAlgorithm = switch (selectedAlgorithmIndex) {
                 case 1 -> new ShortestPathAlgorithm(); // Replace with your actual ShortestPathAlgorithm class
                 case 2 -> new RandomMovementAlgorithm(); // Replace with your actual RandomMovementAlgorithm class
-                //case 3 -> new LongestPathAlgorithm(); // Replace with your actual RandomMovementAlgorithm class
+                case 3 -> new LeastWeightAlgorithm(); // Replace with your actual RandomMovementAlgorithm class
                 default -> throw new IllegalArgumentException("Invalid algorithm index");
             };
 
