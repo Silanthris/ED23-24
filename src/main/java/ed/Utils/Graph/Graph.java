@@ -207,7 +207,7 @@ public class Graph<T> implements GraphADT<T> {
             int currentVertex = getMinDistanceVertex(distances, visited);
 
             if (currentVertex == -1) {
-               currentVertex = 0;
+               currentVertex = 1;
             }
 
            // System.out.println(currentVertex);

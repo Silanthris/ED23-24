@@ -16,6 +16,7 @@ public class GameMap {
     private final boolean bidirectional;
     private final double density;
     private int currentRound;
+    private int roundsWithoutMove;
     private Player currentPlayer;
 
     public GameMap(boolean bidirectional, double density) {
@@ -29,7 +30,12 @@ public class GameMap {
     public Graph<EntitiesLocation> getGraph() {
         return graph;
     }
-
+    public int getRoundsWithoutMove() {
+        return roundsWithoutMove;
+    }
+    public void setRoundsWithoutMove(int roundsWithoutMove) {
+        this.roundsWithoutMove = roundsWithoutMove;
+    }
     public Player getPlayer1() {
         return player1;
     }
@@ -185,6 +191,7 @@ public class GameMap {
 
         System.out.println("Round " + currentRound + ": Player " + (currentPlayer == player1 ? 1 : 2) + "'s turn");
         int currentPlayerInt = (currentPlayer == player1 ? 1 : 2);
+        int noMoveCounter = 0;
 
         int botIndex = 0;
         for (Bot bot : currentPlayer.getBots()) {
@@ -217,11 +224,15 @@ public class GameMap {
                             "(" + newPosition.getX() + ", " + newPosition.getY() + "  " + newPosition.getId() + ")");
 
 
+
+
                 } else {
                     System.out.println("Bot"+ botIndex + " " + "Posição ocupada");
+                    noMoveCounter++;
                 }
             } else {
                 System.out.println("Bot " + botIndex + " move is null");
+                noMoveCounter++;
                 // Handle the case where the move is null
             }
 
@@ -230,6 +241,9 @@ public class GameMap {
 
         }
 
+        if(noMoveCounter == currentPlayer.getBots().size()){
+            roundsWithoutMove++;
+        }
 
         // Alternar para o próximo jogador na próxima ronda
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
