@@ -1,6 +1,6 @@
 package ed.API.Game;
 
-public class EntitiesLocation {
+public class EntitiesLocation implements IEntitiesLocation {
     private final int id;
     private final double x;
     private final double y;

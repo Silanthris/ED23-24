@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import static ed.Utils.Files.File.getFileFromResources;
 
-public class Import {
+public class Import implements IImport{
 
     private final Graph<EntitiesLocation> newGraph;
 

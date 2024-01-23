@@ -4,7 +4,7 @@ import ed.API.Algorithm.Algorithm;
 import ed.API.Game.EntitiesLocation;
 import ed.Utils.List.UnorderedArrayList;
 
-public class Bot {
+public class Bot implements IBot {
     private EntitiesLocation location;
     private Algorithm algorithm;
     private UnorderedArrayList<EntitiesLocation> verticesVisited;

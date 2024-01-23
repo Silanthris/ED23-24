@@ -8,7 +8,7 @@ import java.util.Random;
 
 import ed.Utils.Graph.Graph;
 
-public class GameMap {
+public class GameMap implements IGameMap {
 
     private Player player1;
     private Player player2;
@@ -178,7 +178,7 @@ public class GameMap {
         }
     }
 
-    public static void printMatrix(boolean[][] matrix, int numlocations) {
+    public void printMatrix(boolean[][] matrix, int numlocations) {
 
         System.out.print("[");
         for (int i = 0; i < numlocations; i++) {
@@ -197,7 +197,7 @@ public class GameMap {
         System.out.print("]");
     }
 
-    public static void printMatrixWeight(double[][] matrix, int numlocations) {
+    public void printMatrixWeight(double[][] matrix, int numlocations) {
 
         System.out.print("[");
         for (int i = 0; i < numlocations; i++) {

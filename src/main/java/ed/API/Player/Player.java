@@ -8,7 +8,7 @@ import ed.Utils.List.ArrayList;
 
 import java.util.Scanner;
 
-public class Player {
+public class Player implements IPlayer {
     private final UnorderedArrayList<Bot> bots;
     private final UnorderedArrayList<Algorithm> availableAlgorithms;
 

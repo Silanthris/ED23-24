@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import static ed.Utils.Files.File.getPathFromResources;
 
-public class Export {
+public class Export implements IExport {
 
     private final Graph<EntitiesLocation> graph;
     private final double density;
