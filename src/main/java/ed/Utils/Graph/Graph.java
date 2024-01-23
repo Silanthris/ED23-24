@@ -233,6 +233,52 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
+    public Iterator<T> iteratorLongestPath(T startVertex, T targetVertex) {
+        UnorderedListADT<T> resultList = new UnorderedArrayList<>();
+
+        int startIndex = startVertex == null ? 0 : getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+        if (indexInvalid(startIndex) || indexInvalid(targetIndex) || (startIndex == targetIndex))
+            return resultList.iterator();
+
+        double[] distances = new double[numVertices];
+        int[] predecessors = new int[numVertices];
+        boolean[] visited = new boolean[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
+            distances[i] = Double.NEGATIVE_INFINITY; // Set initial distances to negative infinity
+        }
+        distances[startIndex] = 0;
+
+        for (int i = 0; i < numVertices - 1; i++) {
+            int currentVertex = getMaxDistanceVertex(distances, visited); // Change the method to find max distance
+
+            if (currentVertex == -1) {
+                currentVertex = 1;
+            }
+
+            visited[currentVertex] = true;
+
+            for (int j = 0; j < numVertices; j++) {
+                if (!visited[j] && adjMatrix[currentVertex][j] && distances[currentVertex] != Double.NEGATIVE_INFINITY
+                        && distances[currentVertex] - adjWeightMatrix[currentVertex][j] > distances[j]) {
+                    distances[j] = distances[currentVertex] - adjWeightMatrix[currentVertex][j];
+                    predecessors[j] = currentVertex;
+                }
+            }
+        }
+
+        int currentVertex = targetIndex;
+        while (currentVertex != startIndex) {
+            resultList.addToFront(vertices[currentVertex]);
+            currentVertex = predecessors[currentVertex];
+        }
+        resultList.addToFront(vertices[startIndex]);
+
+        return resultList.iterator();
+    }
+
+
     // Calculates the length of the shortest path from startVertex to targetVertex based on edge weights
     public double shortestPathLength(T startVertex, T targetVertex) {
         int startIndex = startVertex == null ? 0 : getIndex(startVertex);
@@ -276,6 +322,20 @@ public class Graph<T> implements GraphADT<T> {
         }
 
         return minDistanceVertex;
+    }
+
+    private int getMaxDistanceVertex(double[] distances, boolean[] visited) {
+        double maxDistance = Double.NEGATIVE_INFINITY;
+        int maxDistanceVertex = -1;
+
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i] && distances[i] > maxDistance) {
+                maxDistance = distances[i];
+                maxDistanceVertex = i;
+            }
+        }
+
+        return maxDistanceVertex;
     }
 
     public Iterator<T> getAdjacentVertices(T vertex) {
