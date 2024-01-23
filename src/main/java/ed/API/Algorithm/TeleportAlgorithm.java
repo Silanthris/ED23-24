@@ -6,11 +6,11 @@ import ed.Utils.Graph.Graph;
 
 import java.util.Iterator;
 
-public class LeastWeightAlgorithm implements Algorithm {
+public class TeleportAlgorithm implements Algorithm {
     @Override
     public EntitiesLocation move(Bot bot, Graph<EntitiesLocation> graph, EntitiesLocation otherPlayerLocation) {
 
-        Iterator<EntitiesLocation> iterator = graph.iteratorLeastWeightPath(bot.getLocation(), otherPlayerLocation);
+        Iterator<EntitiesLocation> iterator = graph.iteratorTeleportPath(bot.getLocation(), otherPlayerLocation);
 
         if(!iterator.hasNext()) return null;
 

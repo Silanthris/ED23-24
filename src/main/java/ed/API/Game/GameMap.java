@@ -39,27 +39,55 @@ public class GameMap {
     public Player getPlayer1() {
         return player1;
     }
-
     public Player getPlayer2() {
         return player2;
     }
-
     public int getCurrentRound() {
         return currentRound;
     }
-
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
-
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
-
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+
+    public void generateRandomGraphWithRules(int numLocations, boolean bidirectional, double density) {
+        // Validate input parameters
+        if (numLocations <= 0 || density < 0 || density > 1) {
+            throw new IllegalArgumentException("Invalid input parameters");
+        }
+
+
+        Random random = new Random();
+        for (int i = 0; i < numLocations; i++) {
+            graph.addVertex(new EntitiesLocation(i, random.nextDouble(), random.nextDouble()));
+        }
+
+        Iterator<EntitiesLocation> resultList = graph.getVertices();
+        // Generate random edges based on edge density
+        while (resultList.hasNext()) {
+            EntitiesLocation current = resultList.next();
+            Iterator<EntitiesLocation> resultListTemporary = graph.getVertices();
+
+            while (resultListTemporary.hasNext()) {
+                EntitiesLocation currentTemporary = resultListTemporary.next();
+
+                // Ensure the difference in IDs is either 5 or -5
+                int idDifference = Math.abs(current.getId() - currentTemporary.getId());
+                if (idDifference == 5 && random.nextDouble() <= density) {
+                    // Assign a random weight between 1 and 15 kilometers
+                    double randomWeight = 1 + random.nextDouble() * 14;
+
+                    graph.addEdge(current, currentTemporary, bidirectional, density, randomWeight);
+                }
+            }
+        }
+    }
 
     public void generateRandomGraph(int numLocations, boolean bidirectional) {
         // Validate input parameters
@@ -95,9 +123,8 @@ public class GameMap {
                 if (random.nextDouble() <= density && current.getId() != currentTemporary.getId()) {
 
                     Random randomWeight = new Random();
-                    randomWeight.nextDouble(15);
 
-                    graph.addEdge(current, currentTemporary, bidirectional, density, randomWeight.nextDouble());
+                    graph.addEdge(current, currentTemporary, bidirectional, density, randomWeight.nextDouble(15));
 
                 }
 
@@ -134,6 +161,46 @@ public class GameMap {
         }
 
     }
+
+    public static void printMatrix(boolean[][] matrix,int numlocations) {
+
+        System.out.print("[");
+        for (int i = 0; i < numlocations; i++) {
+            System.out.print("[");
+            for (int j = 0; j < numlocations; j++) {
+                if(j+1 == numlocations){
+                    System.out.print(matrix[i][j]);
+                } else {
+                    System.out.print(matrix[i][j] + ",");
+                }
+
+            }
+            System.out.print("]");  // Move to the next line after printing a row
+            System.out.println();
+        }
+        System.out.print("]");
+    }
+
+    public static void printMatrixWeight(double[][] matrix,int numlocations) {
+
+        System.out.print("[");
+        for (int i = 0; i < numlocations; i++) {
+            System.out.print("[");
+            for (int j = 0; j < numlocations; j++) {
+                if(j+1 == numlocations){
+                    System.out.print(matrix[i][j]);
+                } else {
+                    System.out.print(matrix[i][j] + ",");
+                }
+
+            }
+            System.out.print("]");  // Move to the next line after printing a row
+            System.out.println();
+        }
+        System.out.print("]");
+    }
+
+
 
     public void selectFlagLocations(int player1Flag, int player2Flag) {
 
@@ -196,7 +263,6 @@ public class GameMap {
         int botIndex = 0;
         for (Bot bot : currentPlayer.getBots()) {
 
-
             botIndex++;
 
             otherPlayerLocation = findPlayerFlagLocation((currentPlayer == player1) ? player2 : player1);
@@ -207,6 +273,7 @@ public class GameMap {
 
             if (move != null) {
 
+
                 boolean moveCheck = checkLocationForBot(move.getId());
 
                 EntitiesLocation initialPosition = bot.getLocation();
@@ -214,6 +281,7 @@ public class GameMap {
                         "(" + initialPosition.getX() + ", " + initialPosition.getY() + "  " + initialPosition.getId() + ")");
 
                 if (!moveCheck) {
+
 
                     bot.addVerticeVisited(bot.getLocation());
 

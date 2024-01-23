@@ -12,8 +12,6 @@ public class ShortestPathAlgorithm implements Algorithm {
 
         Iterator<EntitiesLocation> iterator = graph.iteratorShortestPath(bot.getLocation(), otherPlayerLocation);
 
-        if(!iterator.hasNext()) return null;
-
         iterator.next(); //skip his location
 
         if(!iterator.hasNext()) return null;
