@@ -1,11 +1,8 @@
 package ed;
 
-import ed.API.Game.EntitiesLocation;
 import ed.API.Game.GameMap;
-import ed.Utils.Graph.Graph;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Scanner;
 
 import static ed.Utils.Inputs.getBooleanInput.getBooleanInput;
@@ -31,7 +28,7 @@ public class Main {
         System.out.println("1. Create a new map");
         System.out.println("2. Import an existing map");
 
-        int choice = getUserChoice(scanner, 1, 2);
+        int choice = getUserChoice(scanner);
 
         GameMap gameMap = null;
         if (choice == 1) {
@@ -99,6 +96,19 @@ public class Main {
 
     }
 
+    /**
+     * Displays a menu with options to the user and processes their choice.
+     * The menu includes the following options:
+     * 1. Export Map
+     * 2. End Game
+     * The method continuously prompts the user to choose an option until a valid option is selected.
+     * Invalid inputs (non-numeric or out-of-range) are handled, and the user is prompted to enter a valid option.
+     *
+     * Upon choosing an option:
+     * - If the user chooses 1, the method calls the exportMap() method (you may uncomment the method call).
+     * - If the user chooses 2, the method calls the endGame() method and returns from the method or loop depending on your needs.
+     * - If the user enters an invalid choice, an error message is displayed, and the user is prompted to enter 1 or 2 again.
+     */
     public static void showMenuAndProcessChoice() {
         Scanner scanner = new Scanner(System.in);
 
@@ -132,29 +142,34 @@ public class Main {
         }
     }
 
-    private static int getUserChoice(Scanner scanner, int min, int max) {
+    /**
+     * Prompts the user to enter a numeric choice within the specified range.
+     * Continuously asks for input until a valid numeric choice within the specified range is provided.
+     * Handles invalid inputs, such as non-numeric entries or choices outside the specified range.
+     *
+     * @param scanner The Scanner object used to read user input.
+     * @return The user's valid numeric choice within the specified range.
+     * @throws java.util.InputMismatchException If the user enters a non-numeric value.
+     */
+    private static int getUserChoice(Scanner scanner) {
         int userChoice;
 
         do {
-            System.out.print("Enter your choice (" + min + "-" + max + "): ");
+            System.out.print("Enter your choice (" + 1 + "-" + 2 + "): ");
             while (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a number.");
-                System.out.print("Enter your choice (" + min + "-" + max + "): ");
+                System.out.print("Enter your choice (" + 1 + "-" + 2 + "): ");
                 scanner.next(); // Consume the invalid input
             }
             userChoice = scanner.nextInt();
 
-            if (userChoice < min || userChoice > max) {
-                System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+            if (userChoice < 1 || userChoice > 2) {
+                System.out.println("Invalid choice. Please enter a number between " + 1 + " and " + 2 + ".");
             }
-        } while (userChoice < min || userChoice > max);
+        } while (userChoice < 1 || userChoice > 2);
 
         return userChoice;
     }
-
-
-
-
 
 
 }
