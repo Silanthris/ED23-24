@@ -53,8 +53,8 @@ public class Import {
             if (Objects.isNull(element)) continue;
 
             int id = element.get("id").asInt();
-            int x = element.get("x").asInt();
-            int y = element.get("y").asInt();
+            double x = element.get("x").asDouble();
+            double y = element.get("y").asDouble();
 
             EntitiesLocation vertex = new EntitiesLocation(id, x, y);
 
@@ -64,13 +64,21 @@ public class Import {
 
         if(adjMatrix.size()!=adjWeightMatrix.size()) throw new NullPointerException("Invalid edges!");
 
+        int verticesIndex = 0;
+
         for(EntitiesLocation current : verticesList){
 
             JsonNode connections = adjMatrix.get(current.getId());
             JsonNode weights = adjWeightMatrix.get(current.getId());
 
-            if (Objects.isNull(connections) || !connections.isArray()) continue;
-            else if (Objects.isNull(weights) || !weights.isArray()) continue;
+            if (Objects.isNull(connections) || !connections.isArray()) {
+                verticesIndex++;
+                continue;
+            }
+            else if (Objects.isNull(weights) || !weights.isArray()){
+                verticesIndex++;
+                continue;
+            }
 
             int connectionsIndex = 0;
 
@@ -82,11 +90,14 @@ public class Import {
                 }
 
                 boolean value = element.asBoolean();
+                double weight = adjWeightMatrix.get(verticesIndex).get(connectionsIndex).asDouble();
 
-                if(value) newGraph.addEdge(current, newGraph.getVerticeByIndex(connectionsIndex), bidirectional, density, adjWeightMatrix.get(connectionsIndex).asDouble());
+                if(value) newGraph.addEdge(current, newGraph.getVerticeByIndex(connectionsIndex), bidirectional, density, weight);
 
                 connectionsIndex++;
             }
+
+            verticesIndex++;
 
         }
     }
