@@ -1,12 +1,13 @@
 package ed;
 
-import ed.API.Game.EntitiesLocation;
 import ed.API.Game.GameMap;
-import ed.Utils.Graph.Graph;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Scanner;
+
+import static ed.Utils.Inputs.getBooleanInput.getBooleanInput;
+import static ed.Utils.Inputs.getDoubleInput.getDoubleInput;
+import static ed.Utils.Inputs.getIntegerInput.getIntegerInput;
 
 public class Main {
 
@@ -27,24 +28,28 @@ public class Main {
         System.out.println("1. Create a new map");
         System.out.println("2. Import an existing map");
 
-        int choice = getUserChoice(scanner, 1, 2);
+        int choice = getUserChoice(scanner);
 
+        GameMap gameMap = null;
         if (choice == 1) {
 
             numLocations = getIntegerInput("Enter the number of locations (max 45): ", 1, 45);
             bidirectional = getBooleanInput("Should paths be bidirectional? (true/false): ");
             density = getDoubleInput("Enter the density (max 1.0): ", 0.0, 1.0);
 
+            gameMap = new GameMap(bidirectional, density);
+            gameMap.generateRandomGraph(numLocations, bidirectional);
+            //gameMap.generateRandomGraphWithRules(numLocations, bidirectional,density);
+
+            gameMap.printGraph();
+            //gameMap.printMatrix(gameMap.getGraph().getAdjMatrix(),numLocations);
+            //gameMap.printMatrixWeight(gameMap.getGraph().getAdjWeightMatrix(),numLocations);
+
         } else {
             // User chose to import an existing map
             //importExistingMap();
         }
 
-
-        GameMap gameMap = new GameMap(bidirectional, density);
-        gameMap.generateRandomGraph(numLocations, bidirectional);
-
-        gameMap.printGraph();
 
         // Permita que os jogadores selecionem as localizações das bandeiras
         System.out.print("Jogador 1 - Selecione a localização da bandeira (1-" + numLocations + "): ");
@@ -53,7 +58,7 @@ public class Main {
         System.out.print("Jogador 2 - Selecione a localização da bandeira (1-" + numLocations + "): ");
         int player2Flag = scanner.nextInt();
 
-        gameMap.selectFlagLocations(player1Flag, player2Flag);
+        gameMap.selectFlagLocations(player1Flag - 1, player2Flag - 1);
 
         // Allow players to specify the number of bots
         System.out.print("Player 1 - Specify the number of bots: ");
@@ -76,10 +81,12 @@ public class Main {
 
             if (victoryCheck) {
                 System.out.println("MAN GANHOU");
+                showMenuAndProcessChoice();
                 break;
             }
 
             if (gameMap.getRoundsWithoutMove() >= 5) {
+                showMenuAndProcessChoice();
                 System.out.println("Empate");
                 break;
             }
@@ -89,111 +96,80 @@ public class Main {
 
     }
 
-    public void createNewMap() {
-
-
-    }
-
-    public void startMapCreation() {
+    /**
+     * Displays a menu with options to the user and processes their choice.
+     * The menu includes the following options:
+     * 1. Export Map
+     * 2. End Game
+     * The method continuously prompts the user to choose an option until a valid option is selected.
+     * Invalid inputs (non-numeric or out-of-range) are handled, and the user is prompted to enter a valid option.
+     *
+     * Upon choosing an option:
+     * - If the user chooses 1, the method calls the exportMap() method (you may uncomment the method call).
+     * - If the user chooses 2, the method calls the endGame() method and returns from the method or loop depending on your needs.
+     * - If the user enters an invalid choice, an error message is displayed, and the user is prompted to enter 1 or 2 again.
+     */
+    public static void showMenuAndProcessChoice() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Welcome to Map Creation!");
+        while (true) {
+            // Print menu
+            System.out.println("1. Export Map");
+            System.out.println("2. End Game");
+            System.out.print("Choose an option (1 or 2): ");
 
-        // Ask the user to choose between creating a new map or importing an existing one
-        System.out.println("Do you want to create a new map or import an existing one?");
-        System.out.println("1. Create a new map");
-        System.out.println("2. Import an existing map");
+            // Read user input
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Consume the invalid input
+                continue; // Continue the loop to ask again
+            }
 
-        int choice = getUserChoice(scanner, 1, 2);
-
-        if (choice == 1) {
-            // User chose to create a new map
-            createNewMap();
-        } else {
-            // User chose to import an existing map
-            //importExistingMap();
+            // Process user choice
+            switch (choice) {
+                case 1:
+                    //exportMap();
+                    break;
+                case 2:
+                    //endGame();
+                    return; // Exit the method or loop depending on your needs
+                default:
+                    System.out.println("Invalid choice. Please enter 1 or 2.");
+            }
         }
-
-        // Close the scanner
-        scanner.close();
     }
 
-    private static int getUserChoice(Scanner scanner, int min, int max) {
+    /**
+     * Prompts the user to enter a numeric choice within the specified range.
+     * Continuously asks for input until a valid numeric choice within the specified range is provided.
+     * Handles invalid inputs, such as non-numeric entries or choices outside the specified range.
+     *
+     * @param scanner The Scanner object used to read user input.
+     * @return The user's valid numeric choice within the specified range.
+     * @throws java.util.InputMismatchException If the user enters a non-numeric value.
+     */
+    private static int getUserChoice(Scanner scanner) {
         int userChoice;
 
         do {
-            System.out.print("Enter your choice (" + min + "-" + max + "): ");
+            System.out.print("Enter your choice (" + 1 + "-" + 2 + "): ");
             while (!scanner.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a number.");
-                System.out.print("Enter your choice (" + min + "-" + max + "): ");
+                System.out.print("Enter your choice (" + 1 + "-" + 2 + "): ");
                 scanner.next(); // Consume the invalid input
             }
             userChoice = scanner.nextInt();
 
-            if (userChoice < min || userChoice > max) {
-                System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+            if (userChoice < 1 || userChoice > 2) {
+                System.out.println("Invalid choice. Please enter a number between " + 1 + " and " + 2 + ".");
             }
-        } while (userChoice < min || userChoice > max);
+        } while (userChoice < 1 || userChoice > 2);
 
         return userChoice;
     }
 
-    private static int getIntegerInput(String prompt, int min, int max) {
-        Scanner scanner = new Scanner(System.in);
-        int userInput;
-
-        do {
-            System.out.print(prompt);
-            while (!scanner.hasNextInt()) {
-                System.out.println("Please enter a valid integer.");
-                System.out.print(prompt);
-                scanner.next(); // Consume the invalid input
-            }
-            userInput = scanner.nextInt();
-
-            if (userInput < min || userInput > max) {
-                System.out.println("Please enter a value between " + min + " and " + max + ".");
-            }
-
-        } while (userInput < min || userInput > max);
-
-        return userInput;
-    }
-
-
-    private static boolean getBooleanInput(String prompt) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print(prompt);
-        while (!scanner.hasNextBoolean()) {
-            System.out.println("Please enter 'true' or 'false'.");
-            System.out.print(prompt);
-            scanner.next(); // Consume the invalid input
-        }
-
-        return scanner.nextBoolean();
-    }
-
-    private static double getDoubleInput(String prompt, double min, double max) {
-        Scanner scanner = new Scanner(System.in);
-        double userInput;
-
-        do {
-            System.out.print(prompt);
-            while (!scanner.hasNextDouble()) {
-                System.out.println("Please enter a valid decimal number.");
-                System.out.print(prompt);
-                scanner.next(); // Consume the invalid input
-            }
-            userInput = scanner.nextDouble();
-
-            if (userInput < min || userInput > max) {
-                System.out.println("Please enter a value between " + min + " and " + max + ".");
-            }
-
-        } while (userInput < min || userInput > max);
-
-        return userInput;
-    }
 
 }

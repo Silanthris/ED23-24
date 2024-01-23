@@ -1,9 +1,6 @@
 package ed.API.Player;
 
-import ed.API.Algorithm.Algorithm;
-import ed.API.Algorithm.LeastWeightAlgorithm;
-import ed.API.Algorithm.RandomMovementAlgorithm;
-import ed.API.Algorithm.ShortestPathAlgorithm;
+import ed.API.Algorithm.*;
 import ed.API.Bot.Bot;
 
 import ed.Utils.List.UnorderedArrayList;
@@ -31,8 +28,15 @@ public class Player {
     }
 
 
+    /**
+     * Sets the number of bots and their corresponding algorithms based on user input.
+     * Allows the user to choose an algorithm for each bot from a predefined list.
+     * The selected algorithms are associated with the respective bots.
+     *
+     * @param numBots The number of bots to be created and associated with algorithms.
+     * @throws IllegalArgumentException if the selected algorithm index is invalid.
+     */
     public void setNumBots(int numBots) {
-
         Scanner scanner = new Scanner(System.in);
         UnorderedArrayList<Algorithm> selectedAlgorithms = new UnorderedArrayList<>();
 
@@ -42,27 +46,27 @@ public class Player {
             System.out.println("Choose an algorithm for Bot " + (i + 1) + ":");
             System.out.println("1. Shortest Path");
             System.out.println("2. Random Movement");
-            System.out.println("3. Distancia Menor");
-
+            System.out.println("3. Teleport, esta é a tatica dos deuses");
+            System.out.println("4. Test");
 
             int selectedAlgorithmIndex;
             do {
                 System.out.print("Enter the number of the desired algorithm: ");
                 selectedAlgorithmIndex = scanner.nextInt();
-            } while (selectedAlgorithmIndex < 1 || selectedAlgorithmIndex > 3);
+            } while (selectedAlgorithmIndex < 1 || selectedAlgorithmIndex > 4);
 
             Algorithm selectedAlgorithm = switch (selectedAlgorithmIndex) {
                 case 1 -> new ShortestPathAlgorithm(); // Replace with your actual ShortestPathAlgorithm class
                 case 2 -> new RandomMovementAlgorithm(); // Replace with your actual RandomMovementAlgorithm class
-                case 3 -> new LeastWeightAlgorithm(); // Replace with your actual RandomMovementAlgorithm class
+                case 3 -> new TeleportAlgorithm(); // Replace with your actual TeleportAlgorithm class
+                case 4 -> new ClosestAlgorithm(); // Replace with your actual TestAlgorithm class
+
                 default -> throw new IllegalArgumentException("Invalid algorithm index");
             };
 
             selectedAlgorithms.addToRear(selectedAlgorithm);
             bot.setAlgorithm(selectedAlgorithm);
             bots.addToRear(bot);
-
-
         }
     }
 }
