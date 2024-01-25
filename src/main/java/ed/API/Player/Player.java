@@ -118,7 +118,7 @@ public class Player implements IPlayer {
             bots.addToRear(bot);
             botIndex++;
 
-            if(botIndex > 4){
+            if(botIndex > 3){
                 availableAlgorithms.addToRear(new ShortestPathAlgorithm());
                 availableAlgorithms.addToRear(new RandomMovementAlgorithm());
                 //availableAlgorithms.addToRear(new TeleportAlgorithm());
